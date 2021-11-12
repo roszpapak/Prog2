@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -22,15 +23,27 @@ public class Business {
     private Long id;
     private String name;
     private String address;
-    @ManyToMany
-    private Set<Tag> tags;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Tag> tags;
     private String pnumber;
     private LocalTime startTime;
     private LocalTime endTime;
     private int timeInterval;
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    @OneToMany(mappedBy = "business",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE)
     private Set<Reservation> reservations;
+
+    public Business(String name, String address, List<Tag> tags, String pnumber, LocalTime startTime, LocalTime endTime, int timeInterval, User user) {
+        this.name = name;
+        this.address = address;
+        this.tags = tags;
+        this.pnumber = pnumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.timeInterval = timeInterval;
+        this.user = user;
+    }
 }
+

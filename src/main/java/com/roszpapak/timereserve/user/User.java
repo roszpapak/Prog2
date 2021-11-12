@@ -1,6 +1,7 @@
 package com.roszpapak.timereserve.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.roszpapak.timereserve.business.Business;
 import com.roszpapak.timereserve.reservation.Reservation;
 import lombok.*;
@@ -20,6 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
+@JsonIgnoreProperties("business")
 public class User implements UserDetails {
 
     @Id
@@ -29,14 +31,14 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Business business;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Reservation> reservations;
     @Enumerated(EnumType.STRING)
-    private UserRole UserRole;
-    private boolean locked=false;
-    private boolean enabled=false;
+    private UserRole UserRole = com.roszpapak.timereserve.user.UserRole.USER;
+    private boolean locked = false;
+    private boolean enabled = false;
 
 
     public User(String firstName, String lastName, String email, String password, Business business, com.roszpapak.timereserve.user.UserRole userRole) {
@@ -46,6 +48,14 @@ public class User implements UserDetails {
         this.password = password;
         this.business = business;
         UserRole = userRole;
+    }
+
+
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     @Override

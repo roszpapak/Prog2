@@ -8,45 +8,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ReservationService {
 
-    private static final LocalTime START_TIME = LocalTime.of(7,0);
-    private static final LocalTime END_TIME = LocalTime.of(23,0);
 
-    private final Set<Pair<LocalTime,LocalTime>> quarterReservations;
-    private final Set<Pair<LocalTime,LocalTime>> halfReservations;
-    private final Set<Pair<LocalTime,LocalTime>> hourReservations;
-    private final Set<Pair<LocalTime,LocalTime>> twoHourReservations;
+    private BusinessRepository businessRepository;
+    private ReservationRepository reservationRepository;
 
     @Autowired
-    public ReservationService (BusinessRepository businessRepository){
+    public ReservationService(BusinessRepository businessRepository, ReservationRepository reservationRepository) {
 
+        this.reservationRepository = reservationRepository;
         this.businessRepository = businessRepository;
-        quarterReservations = initializeReservations(15);
-        halfReservations = initializeReservations(30);
-        hourReservations = initializeReservations(60);
-        twoHourReservations = initializeReservations(120);
 
     }
 
-    private Set<Pair<LocalTime,LocalTime>> initializeReservations(long minute){
+    private Set<Pair<LocalTime, LocalTime>> initializeReservations(long minute, LocalTime businessStartTime, LocalTime businessEndTime) {
 
-        Set<Pair<LocalTime,LocalTime>> timeReservations = new HashSet<>();
+        Set<Pair<LocalTime, LocalTime>> timeReservations = new LinkedHashSet<>();
 
-        LocalTime startTime = START_TIME;
+        LocalTime startTime = businessStartTime;
         LocalTime endTime = null;
 
-        while(!END_TIME.equals(endTime)){
+        while (!businessEndTime.equals(endTime)) {
 
-            if(startTime.until(END_TIME, ChronoUnit.MINUTES) >= minute) {
+            if (startTime.until(businessEndTime, ChronoUnit.MINUTES) >= minute) {
                 endTime = startTime.plusMinutes(minute);
             } else {
                 break;
@@ -61,51 +52,39 @@ public class ReservationService {
 
     }
 
-    private BusinessRepository businessRepository;
-    public Set<Pair<LocalTime,LocalTime>> getFreeReservationsForDay(Long businessId , LocalDateTime date) throws BusinessNotFoundException{
+    public Set<Pair<LocalTime, LocalTime>> getFreeReservationsForDay(Long businessId, LocalDate date) throws BusinessNotFoundException {
 
-        Set<Pair<LocalTime,LocalTime>> reservations = new HashSet<>();
+        Set<Pair<LocalTime, LocalTime>> reservations = new HashSet<>();
         Optional<Business> optionalBusiness = businessRepository.findById(businessId);
-        Business business = optionalBusiness.orElseThrow(()-> new BusinessNotFoundException(String.format("Business with Id : %s not found", businessId)));
+        Business business = optionalBusiness.orElseThrow(() -> new BusinessNotFoundException(String.format("Business with Id : %s not found", businessId)));
 
         int interval = business.getTimeInterval();
         LocalTime startTime = business.getStartTime();
         LocalTime endTime = business.getEndTime();
 
-        Set<Pair<LocalTime,LocalTime>> allReservations = new HashSet<>();
+        Set<Pair<LocalTime, LocalTime>> allReservations = initializeReservations(interval, startTime, endTime);
 
-        switch (interval){
+        List<Reservation> reservationsForBusinessOnDay = reservationRepository.getReservationsForBusinessOnDay(businessId, date);
 
-            case 15:
-                allReservations = quarterReservations;
-                break;
+        Set<Pair<LocalTime, LocalTime>> possibleReservations = new LinkedHashSet<>();
 
-            case 30:
-                allReservations = halfReservations;
-                break;
-
-            case 60:
-                allReservations = hourReservations;
-                break;
-
-            case 120:
-                allReservations = twoHourReservations;
-                break;
-        }
-
-        Set<Pair<LocalTime,LocalTime>> possibleReservations = new HashSet<>();
-
-        for(Pair<LocalTime,LocalTime> actual : allReservations){
-            if((actual.getFirst().equals(startTime) || actual.getFirst().isAfter(startTime)) &&
-                    (actual.getSecond().equals(endTime) || actual.getSecond().isBefore(endTime))){
-
+        for (Pair<LocalTime, LocalTime> actual : allReservations) {
+            if (isFree(actual, reservationsForBusinessOnDay)) {
                 possibleReservations.add(actual);
             }
-
         }
 
-
-        return reservations;
+        return possibleReservations;
     }
+
+    private boolean isFree(Pair<LocalTime, LocalTime> actual, List<Reservation> possibleReservations) {
+        for (Reservation currentReservation : possibleReservations) {
+            if (actual.getFirst().equals(currentReservation.getStartTime())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 }

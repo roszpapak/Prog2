@@ -1,6 +1,6 @@
 package com.roszpapak.timereserve.business;
 
-public class BusinessNotFoundException extends RuntimeException{
+public class BusinessNotFoundException extends Exception {
 
     public BusinessNotFoundException() {
     }

@@ -3,6 +3,8 @@ package com.roszpapak.timereserve.registration;
 import com.roszpapak.timereserve.email.EmailSender;
 import com.roszpapak.timereserve.registration.token.ConfirmationToken;
 import com.roszpapak.timereserve.registration.token.ConfirmationTokenService;
+import com.roszpapak.timereserve.tag.Tag;
+import com.roszpapak.timereserve.tag.TagRepository;
 import com.roszpapak.timereserve.user.User;
 import com.roszpapak.timereserve.user.UserRole;
 import com.roszpapak.timereserve.user.UserService;
@@ -11,11 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class RegistrationService {
 
+    private final TagRepository tagRepository;
     private final UserService userService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
@@ -23,41 +29,61 @@ public class RegistrationService {
 
 
     public String register(RegistrationRequest request) {
-    boolean isValidEmail = emailValidator.test(request.getEmail());
+        boolean isValidEmail = emailValidator.test(request.getEmail());
 
-        if(!isValidEmail){
+        if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
 
+        List<Tag> correctTagList = getTagList(request.getBusiness().getTags());
+        request.getBusiness().setTags(correctTagList);
+
         String token = userService.signUpUser(
-              new User(
-                      request.getFirstName(),
-                      request.getLastName(),
-                      request.getEmail(),
-                      request.getPassword(),
-                      request.getBusiness(),
-                      UserRole.USER
+                new User(
+                        request.getFirstName(),
+                        request.getLastName(),
+                        request.getEmail(),
+                        request.getPassword(),
+                        request.getBusiness(),
+                        UserRole.USER
 
 
-              )
+                )
         );
         String link = "localhost:8080/api/v1/registration/confirm?token=" + token;
-        emailSender.send(request.getEmail(),buildEmail(request.getFirstName(),link));
+        emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
         return token;
     }
 
+    private List<Tag> getTagList(List<Tag> tags) {
+
+        List<Tag> correctTagsList = new ArrayList<>();
+        for (Tag currentTag : tags) {
+            Optional<Tag> optTag = tagRepository.findByValue(currentTag.getValue());
+            if (optTag.isPresent()) {
+                correctTagsList.add(optTag.get());
+            } else {
+                correctTagsList.add(currentTag);
+            }
+
+        }
+
+
+        return correctTagsList;
+    }
+
     @Transactional
-    public String confirmToken (String token){
+    public String confirmToken(String token) {
 
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
-                .orElseThrow(()-> new IllegalStateException("Token not found"));
+                .orElseThrow(() -> new IllegalStateException("Token not found"));
 
-        if (confirmationToken.getConfirmedAt() != null){
+        if (confirmationToken.getConfirmedAt() != null) {
             throw new IllegalStateException("email already confirmed");
         }
 
-        if(LocalDateTime.now().isAfter(confirmationToken.getExpiredAt())){
+        if (LocalDateTime.now().isAfter(confirmationToken.getExpiredAt())) {
             throw new IllegalStateException("Token expired");
         }
 
@@ -66,7 +92,6 @@ public class RegistrationService {
         userService.enableUser(confirmationToken.getUser());
 
         return "confirmed";
-
 
 
     }

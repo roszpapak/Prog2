@@ -1,6 +1,7 @@
 package com.roszpapak.timereserve.tag;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.roszpapak.timereserve.business.Business;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
+@JsonIgnoreProperties("businesses")
 public class Tag {
 
     @Id
