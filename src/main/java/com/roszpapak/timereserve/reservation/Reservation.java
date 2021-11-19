@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -19,13 +21,22 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private Date date;
+    private LocalTime startTime;
+    private LocalTime endTime;
     @ManyToOne
-    @JoinColumn(name = "business_id",nullable = false)
+    @JoinColumn(name = "business_id", nullable = false)
     private Business business;
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
+    public Reservation(Date date, LocalTime startTime, LocalTime endTime, Business business, User user) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.business = business;
+        this.user = user;
+    }
 }

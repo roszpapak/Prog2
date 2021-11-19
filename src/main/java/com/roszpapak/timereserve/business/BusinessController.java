@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -14,24 +16,29 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
-    @GetMapping("/businesses")
+    @GetMapping("/businesses/findByName")
     @ResponseBody
-    public List<Business> getBusinesses(Model model, String keyword) {
-        List<Business> getBusinessByName = businessService.listByName(keyword);
-        List<Business> getAllBusiness = businessService.listAll();
+    public List<Business> getBusinesses(@RequestParam String keyword) {
         if (keyword != null) {
-            return getBusinessByName;
+            return businessService.listByName(keyword.toLowerCase());
         } else {
-            return getAllBusiness;
+            return businessService.listAll();
         }
     }
 
-    /*@PostMapping("/businesses")
-    @ResponseBody
-    public List<Business> getBusinessesByName(@RequestBody String keyword, Model model) {
-        List<Business> getBusinessByName = businessService.listByName(keyword);
-        model.addAttribute("listBusinesses", getBusinessByName);
-        return getBusinessByName;
-    }*/
+    @GetMapping("/businesses")
+    public String getBusinesses(Model model) {
+        model.addAttribute("listBusinesses", businessService.listAll());
+        return "businesses";
+    }
+
+    @GetMapping("/businesses/{id}")
+    public String getBusinessById(Model model, @PathVariable Long id) {
+        model.addAttribute("businessById", businessService.listById(id));
+        return "business";
+    }
+
 }
+
+
 

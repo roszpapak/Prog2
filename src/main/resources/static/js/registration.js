@@ -56,4 +56,4 @@ $("#sampleForm").submit(function(event){
 
 });
 
-});
+)};

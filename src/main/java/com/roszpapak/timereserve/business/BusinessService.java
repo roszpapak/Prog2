@@ -19,4 +19,8 @@ public class BusinessService {
 
         return (List<Business>) businessRepository.findAll();
     }
+
+    public Business listById(Long id) {
+        return businessRepository.findById(id).orElseThrow(() -> new IllegalStateException("Business with id :" + id + " not found"));
+    }
 }

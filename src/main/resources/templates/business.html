@@ -45,12 +45,8 @@
 
 </section>
 
-<section id="businesses">
+<section id="business">
     <div>
-        <form id="businessSearch" method="GET" th:action="@{/businesses}">
-            <input class="searchbutton" id="businessSearchInput" name="keyword" placeholder="Keresés.." type="text">
-            <button type="submit">GO</button>
-        </form>
         <table class="table table-bordered" id="businessTable">
             <thead>
             <tr>
@@ -62,26 +58,39 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:each="business : ${listBusinesses}">
+            <th:block th:each="business : ${businessById}">
                 <tr>
                     <td>[[${business.name}]]</td>
                     <td>[[${business.address}]]</td>
                     <td>[[${business.pnumber}]]</td>
                     <td><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></td>
-                    <td><a th:href="@{'/businesses/' + ${business.id}}"><i class="fas fa-share"></i></a>
-                    </td>
                 </tr>
             </th:block>
 
+
             </tbody>
         </table>
+
+        <form id="reservationSearch">
+            <label>Reservation Date</label>
+            <input id="reservationDateInput" type="date">
+            <input type="submit">
+            <select id="reservationSelect">
+            </select>
+        </form>
+        <form id="reservationSave">
+            <input id="reservationSaveButton" style="display:none" type="submit" value="Save The Date">
+        </form>
+
+
     </div>
 
 
 </section>
 
 
-<script th:src="@{/js/businessSearch.js}"></script>
+<script th:src="@{/js/reservation.js}"></script>
+<script th:src="@{/js/reservationsave.js}"></script>
 <script crossorigin="anonymous"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
