@@ -24,11 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/registration/**", "/h2-console/**", "/registration", "/css/**", "/js/**", "/img/**", "/database/**", "/users", "/home", "/businesses/**", "/business/**")
+                .antMatchers("/api/v*/registration/**", "/h2-console/**", "/registration", "/css/**", "/js/**", "/img/**", "/database/**", "/users", "/home", "/businesses", "/businesses/findByName")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()
+                .loginPage("/login")
+                .permitAll()
                 .and()
                 .headers().frameOptions().disable();
 

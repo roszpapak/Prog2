@@ -16,9 +16,12 @@ $(document).ready(function(){
                  url:'http://localhost:8080/reservationsave' ,
                  data:JSON.stringify(data),
                  contentType : 'application/json'
+
+             })
+             .done(function(){
+                location.reload();
              });
 
-
-
     });
+
 });

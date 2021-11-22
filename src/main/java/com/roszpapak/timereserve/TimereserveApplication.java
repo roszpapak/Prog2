@@ -5,6 +5,7 @@ import com.roszpapak.timereserve.business.BusinessRepository;
 import com.roszpapak.timereserve.tag.Tag;
 import com.roszpapak.timereserve.user.User;
 import com.roszpapak.timereserve.user.UserRepository;
+import com.roszpapak.timereserve.user.UserRole;
 import com.roszpapak.timereserve.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,8 @@ import java.util.List;
 @SpringBootApplication
 public class TimereserveApplication {
 
+    private static final UserRole BUSINESSOWNER = UserRole.BUSINESSOWNER;
+
     public static void main(String[] args) {
         SpringApplication.run(TimereserveApplication.class, args);
     }
@@ -28,7 +31,7 @@ public class TimereserveApplication {
         return args -> {
 
 
-            User papa = new User("Papa", "Rosz", "roszpa@gmail.com", "$2a$10$i7JhwVSVsWO7dLAt9yHkQ.9Eq8jvzlxLBWBOfs9VXCu.Y5wrNgoIG");
+            User papa = new User("Papa", "Rosz", "roszpa@gmail.com", "$2a$10$i7JhwVSVsWO7dLAt9yHkQ.9Eq8jvzlxLBWBOfs9VXCu.Y5wrNgoIG", BUSINESSOWNER);
             papa.setEnabled(true);
             userRepository.save(papa);
             User stefi = new User("Stef", "Csi", "roszpi@gmail.com", "$2a$10$i7JhwVSVsWO7dLAt9yHkQ.9Eq8jvzlxLBWBOfs9VXCu.Y5wrNgoIG\n");

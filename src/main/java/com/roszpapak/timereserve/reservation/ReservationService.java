@@ -87,4 +87,11 @@ public class ReservationService {
     }
 
 
+    public Object getByBusinessId(Long id) {
+        return reservationRepository.findByBusinessId(id);
+    }
+
+    public List<Reservation> getByUserId(Long id) {
+        return reservationRepository.findByUserId(id);
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -17,7 +18,6 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <script th:src="@{/js/java.js}"></script>
 
 
 </head>
@@ -25,15 +25,27 @@
 <section id="header">
     <div class="container">
 
-        <a class="icon" href="Webreserve.com"><img alt="" src="/img/WR-icon.png"></a>
+        <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
+
 
         <div class="content">
-            <a th:href="@{/login}">
+
+            <a sec:authorize="hasAuthority('BUSINESSOWNER')" th:href="@{/mybusiness}">
+                <button class="button">MYBUSINESS</button>
+            </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/myprofile}">
+                <button class="button">MYPROFILE</button>
+            </a>
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/login}">
                 <button class="button">Log In</button>
             </a>
-            <a th:href="@{/registration}">
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+                <button class="button">LOG OUT</button>
+            </a>
+
         </div>
 
     </div>
@@ -42,17 +54,18 @@
 <section id="mainpage">
     <div class="maincontainer">
         <p class="maintext">KERESD MEG A NEKED <br> MEGFELELŐ SZOLGÁLTATÁST</p>
-        <div class="search"><input class="searchbutton" placeholder="Keresés.." type="text"></div>
-        <a class="regbutton" id="registrationButton" th:href="@{/registration}">REGISZTRACIO</a>
-        <a class="logbutton" href="/" id="loginButton">BELEPES</a>
-
-
+        <a class="regbutton" id="registrationButton"
+           sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">REGISZTRACIO</a>
+        <a class="logbutton" href="/" id="loginButton"
+           sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')">BELEPES</a>
+        <a class="regbutton" id="businessButton" th:href="@{/businesses}">BUSINESSES</a>
+        <a class="regbutton" id="myProfileButton" th:href="@{/users}">USERS</a>
     </div>
 
 
 </section>
 
 
-<script th:src="@{/js/java.js}"></script>
+<script th:src="@{/js/index.js}"></script>
 </body>
 </html>

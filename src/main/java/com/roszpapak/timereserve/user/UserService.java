@@ -46,8 +46,10 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
 
         User savedUser = userRepository.save(user);
-        savedUser.getBusiness().setUser(savedUser);
-        businessRepository.save(savedUser.getBusiness());
+        if (savedUser.getBusiness() != null) {
+            savedUser.getBusiness().setUser(savedUser);
+            businessRepository.save(savedUser.getBusiness());
+        }
 
 
         String token = UUID.randomUUID().toString();

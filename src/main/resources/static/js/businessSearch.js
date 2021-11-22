@@ -16,16 +16,18 @@ $("#businessSearch").submit(function (event){
     var tbody = $('#businessTable tbody');
     tbody.empty();
     for(const current of data){
+            console.log(data);
             var tr = document.createElement('tr');
             var td =
                 '<td>' + current.name + '</td>' +
                 '<td>' + current.address + '</td>' +
                 '<td>' + current.pnumber + '</td>';
             td += '<td>';
-            for(const element of current.tags ){
+            for(let element of current.tags){
                 td += '<span>' + element.value + '</span>';
             }
             td += '</td>';
+            td +='<td><a href="/businesses/' + current.id + '"><i class="fas fa-share"></i></a> </td>';
             tr.innerHTML = td;
             tbody.append(tr);
     }

@@ -29,7 +29,7 @@
 <section id="header">
     <div class="container">
 
-        <a class="icon" href="Webreserve.com"><img alt="" src="/img/WR-icon.png"></a>
+        <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
 
         <div class="content">
             <a th:href="@{/login}">
@@ -59,8 +59,32 @@
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.email}]]</td>
                 <td class="icon-container">
-                    <i class="fas fa-user-edit icon"></i>
-                    <i class="fas fa-user-minus icon"></i>
+                    <i class="fas fa-user-edit icon" id="editButton"></i>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</section>
+
+<section id="myreservations">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>DATE</th>
+            <th>START</th>
+            <th>END</th>
+            <th>BUSINESS</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="reservation : ${myReservations}">
+            <tr>
+                <td>[[${reservation.date}]]</td>
+                <td>[[${reservation.startTime}]]</td>
+                <td>[[${reservation.endTime}]]</td>
+                <td><span th:each="business :${reservation.business}"> [[${business.name}]]</span>
                 </td>
             </tr>
         </th:block>
@@ -69,14 +93,16 @@
 </section>
 
 <section id="edit">
-    <div class="bg-modal-reg">
+    <div class="editcontainer" id="editbox">
         <div class="modal-content-reg">
             <img alt="" src="/img/WR-icon.png">
-            <form id="sampleForm" method="POST" th:object="${myProfile}">
-                <input id="firstName" name="firstName" th:field="*{firstName}" type="text">
-                <input id="lastName" name="lastName" th:field="*{lastName}" type="text">
-                <input id="email" name="email" th:field="*{email}" type="text">
-                <input id="passwordInput" name="password" th:field="*{password}" type="password">
+            <form id="userEditBox" method="POST" th:object="${myProfile}">
+                <span>FIRST NAME</span>
+                <input id="firstName" minlength="8" name="firstName" required th:field="*{firstName}" type="text">
+                <span>LAST NAME</span>
+                <input id="lastName" minlength="8" name="lastName" required th:field="*{lastName}" type="text">
+                <span>PASSWORD</span>
+                <input id="passwordInput" minlength="8" name="password" th:field="*{password}" type="password">
                 <button id="btnSubmit" type="submit">SAVE</button>
             </form>
         </div>
@@ -85,7 +111,9 @@
 </section>
 
 
+<script th:src="@{/js/edit.js}"></script>
 <script th:src="@{/js/registration.js}"></script>
+<script th:src="@{/js/usereditsave.js}"></script>
 <script crossorigin="anonymous"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

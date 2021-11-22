@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +38,8 @@ public class ReservationController {
 
 
     @PostMapping("/reservationsave")
-    private String reservationSave(@RequestBody ReservationRequest reservationRequest, @AuthenticationPrincipal User user) {
+    @ResponseBody
+    private String reservationSave(@RequestBody ReservationRequest reservationRequest, @AuthenticationPrincipal User user, HttpServletResponse response) {
         Optional<Business> businessOptional = businessRepository.findById(reservationRequest.getBusinessId());
         if (businessOptional.isPresent()) {
             Business business = businessRepository.findById(reservationRequest.getBusinessId()).get();
@@ -45,6 +47,7 @@ public class ReservationController {
             Reservation reservation = new Reservation(reservationRequest.getDate(), reservationRequest.getStartTime(), endTime, business, user);
             reservationRepository.save(reservation);
         }
-        return "businesses";
+
+        return "Hello";
     }
 }

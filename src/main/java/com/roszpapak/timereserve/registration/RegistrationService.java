@@ -6,7 +6,6 @@ import com.roszpapak.timereserve.registration.token.ConfirmationTokenService;
 import com.roszpapak.timereserve.tag.Tag;
 import com.roszpapak.timereserve.tag.TagRepository;
 import com.roszpapak.timereserve.user.User;
-import com.roszpapak.timereserve.user.UserRole;
 import com.roszpapak.timereserve.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,9 +33,11 @@ public class RegistrationService {
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
+        if (request.getBusiness() != null) {
+            List<Tag> correctTagList = getTagList(request.getBusiness().getTags());
+            request.getBusiness().setTags(correctTagList);
+        }
 
-        List<Tag> correctTagList = getTagList(request.getBusiness().getTags());
-        request.getBusiness().setTags(correctTagList);
 
         String token = userService.signUpUser(
                 new User(
@@ -45,7 +46,7 @@ public class RegistrationService {
                         request.getEmail(),
                         request.getPassword(),
                         request.getBusiness(),
-                        UserRole.USER
+                        request.getUserRole()
 
 
                 )

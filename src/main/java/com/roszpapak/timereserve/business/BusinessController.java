@@ -1,6 +1,9 @@
 package com.roszpapak.timereserve.business;
 
+import com.roszpapak.timereserve.reservation.ReservationService;
+import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,8 @@ public class BusinessController {
 
     @Autowired
     BusinessService businessService;
+    @Autowired
+    ReservationService reservationService;
 
     @GetMapping("/businesses/findByName")
     @ResponseBody
@@ -38,6 +43,14 @@ public class BusinessController {
         return "business";
     }
 
+    @GetMapping("/mybusiness")
+    public String getMyBusiness(Model model, @AuthenticationPrincipal User user) {
+
+        Business business = businessService.getByUserId(user.getId());
+        model.addAttribute("myBusiness", business);
+        model.addAttribute("myBusinessReservations", reservationService.getByBusinessId(business.getId()));
+        return "mybusiness";
+    }
 }
 
 
