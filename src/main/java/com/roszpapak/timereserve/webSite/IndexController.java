@@ -11,6 +11,11 @@ public class IndexController {
     @Autowired
     private UserService service;
 
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:login?logout";
+    }
+
     @GetMapping("/registration")
     public String getRegistration() {
         return "registration.html";
@@ -21,9 +26,13 @@ public class IndexController {
         return "index.html";
     }
 
-
     @GetMapping("/login")
     public String Login() {
         return "login";
+    }
+
+    @GetMapping("/")
+    public String start() {
+        return "index";
     }
 }

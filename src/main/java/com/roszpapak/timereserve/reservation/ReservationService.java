@@ -28,6 +28,7 @@ public class ReservationService {
 
     }
 
+    //Calculating Reservations
     private Set<Pair<LocalTime, LocalTime>> initializeReservations(long minute, LocalTime businessStartTime, LocalTime businessEndTime) {
 
         Set<Pair<LocalTime, LocalTime>> timeReservations = new LinkedHashSet<>();
@@ -51,6 +52,8 @@ public class ReservationService {
         return timeReservations;
 
     }
+
+    //Creating Reservations
 
     public Set<Pair<LocalTime, LocalTime>> getFreeReservationsForDay(Long businessId, LocalDate date) throws BusinessNotFoundException {
 
@@ -77,6 +80,7 @@ public class ReservationService {
         return possibleReservations;
     }
 
+    //Checking if reservation is Free
     private boolean isFree(Pair<LocalTime, LocalTime> actual, List<Reservation> possibleReservations) {
         for (Reservation currentReservation : possibleReservations) {
             if (actual.getFirst().equals(currentReservation.getStartTime())) {

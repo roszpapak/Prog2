@@ -27,6 +27,8 @@ public class RegistrationService {
     private final EmailSender emailSender;
 
 
+    //CREATING AND SAVING NEW USER AFTER REGISTRATION
+
     public String register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
 
@@ -51,6 +53,9 @@ public class RegistrationService {
 
                 )
         );
+
+        //SENDING TOKEN
+
         String link = "localhost:8080/api/v1/registration/confirm?token=" + token;
         emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
         return token;

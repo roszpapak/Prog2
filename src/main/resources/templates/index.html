@@ -56,8 +56,8 @@
         <p class="maintext">KERESD MEG A NEKED <br> MEGFELELŐ SZOLGÁLTATÁST</p>
         <a class="regbutton" id="registrationButton"
            sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">REGISZTRACIO</a>
-        <a class="logbutton" href="/" id="loginButton"
-           sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')">BELEPES</a>
+        <a class="logbutton" id="loginButton" sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')"
+           th:href="@{/login}">BELEPES</a>
         <a class="regbutton" id="businessButton" th:href="@{/businesses}">BUSINESSES</a>
         <a class="regbutton" id="myProfileButton" th:href="@{/users}">USERS</a>
     </div>
