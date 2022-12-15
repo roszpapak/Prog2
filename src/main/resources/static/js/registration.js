@@ -21,10 +21,10 @@ function businessFunction() {
 
 
 if (x.style.display === "block"){
-    $("#businessname").attr('minlength',"8");
-    $("#address").attr('minlength',"8");
-    $("#pnumber").attr('minlength',"8");
-    $("#tag").attr('minlength',"8");
+    $("#businessname").attr('minlength',"4");
+    $("#address").attr('minlength',"4");
+    $("#pnumber").attr('minlength',"4");
+    $("#tag").attr('minlength',"4");
 
     $("#businessname").attr("required", "");
     $("#address").attr("required", "");

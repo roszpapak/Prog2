@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(104, 104, 104);
+    background-color: #124559;
     min-width: 100%;
 }
 
@@ -31,12 +31,12 @@
     padding: 0.5rem 0.5rem;
     margin-right: 2rem;
     border:none;
-    background-color: rgb(197, 197, 197);
+    background-color: white;
     color: black;
   }
   
 #header .button:hover {
-    background-color: black;
+    background-color: #598392;
     color:white;
   }
 
@@ -46,7 +46,7 @@
     padding: 0px;
     margin: 0px !important;
     height: 55.5rem;
-    background : linear-gradient(black,grey 250%);
+    background : linear-gradient(#598392,grey 250%);
     display: block;
     align-items: center;
     text-align: center;
@@ -55,9 +55,26 @@
 #mainpage .maincontainer p {
     padding-top: 75px;
     font-size: 72px;
-    background: -webkit-linear-gradient(#eee, #333);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color:white;
+}
+
+#mainpage .maincontainer .content {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    margin: 0% 10%;
+}
+
+#mainpage .maincontainer .content-box {
+    display: grid;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    justify-items:center;
+}
+
+#mainpage .maincontainer .content-box a{
+    margin: 10%;
 }
 
 #mainpage .searchbutton{
@@ -76,41 +93,19 @@
     margin-right: 20px;
     border-color: white;
     color:white;
-    padding: 20px 50px;
     border-radius: 20px;
     background-color: transparent;
-    width: 200px;
     font-size: 1.5rem;
-    
+    width: fit-content;
+    padding: 5%;
 }
 
 #mainpage .regbutton:hover{
-    border-color: black;
-    background-color: black;
+    border-color: #124559;
+    background-color: #124559;
     color: white;
 
 }
-
-#mainpage .logbutton{
-    text-decoration: none;
-    border: solid 1px;
-    margin-left: 20px;
-    border-color: white;
-    color:white;
-    padding: 20px 95px;
-    border-radius: 20px;
-    background-color: transparent;
-    width: 200px;
-    font-size: 1.5rem;
-}
-
-#mainpage .logbutton:hover{
-    border-color: black;
-    background-color: black;
-    color: white;
-
-}
-
   
 #regbox .bg-modal-reg{
 

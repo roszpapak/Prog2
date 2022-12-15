@@ -57,7 +57,6 @@ public class ReservationService {
 
     public Set<Pair<LocalTime, LocalTime>> getFreeReservationsForDay(Long businessId, LocalDate date) throws BusinessNotFoundException {
 
-        Set<Pair<LocalTime, LocalTime>> reservations = new HashSet<>();
         Optional<Business> optionalBusiness = businessRepository.findById(businessId);
         Business business = optionalBusiness.orElseThrow(() -> new BusinessNotFoundException(String.format("Business with Id : %s not found", businessId)));
 

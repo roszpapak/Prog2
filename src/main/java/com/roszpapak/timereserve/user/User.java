@@ -22,6 +22,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode
 @JsonIgnoreProperties("business")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -33,7 +34,7 @@ public class User implements UserDetails {
     private String password;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Business business;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE,fetch= FetchType.EAGER)
     private Set<Reservation> reservations;
     @Enumerated(EnumType.STRING)
     private UserRole UserRole = com.roszpapak.timereserve.user.UserRole.USER;

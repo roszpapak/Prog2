@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
 
-    @Query(value = "select * from User u where u.FIRST_NAME like %:keyword% or u.LAST_NAME like %:keyword%" , nativeQuery = true )
+    @Query(value = "select * from users u where FIRST_NAME like %:keyword% or LAST_NAME like %:keyword%" , nativeQuery = true )
     List<User> findByKeyWord(@Param("keyword") String keyword);
 
 }
