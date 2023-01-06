@@ -88,4 +88,17 @@ public class UserService implements UserDetailsService {
         Optional<User> result = userRepository.findById(id);
         return result.get();
     }
+
+    public void updateUser(UserEditRequest userEditRequest, User myProfile) {
+        myProfile.setFirstName(userEditRequest.getFirstName());
+        myProfile.setLastName(userEditRequest.getLastName());
+        if (userEditRequest.getPassword() != null) {
+            myProfile.setPassword(bCryptPasswordEncoder.encode(userEditRequest.getPassword()));
+        }
+        userRepository.save(myProfile);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 }

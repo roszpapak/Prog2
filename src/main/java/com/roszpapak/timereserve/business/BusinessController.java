@@ -1,28 +1,22 @@
 package com.roszpapak.timereserve.business;
 
 import com.roszpapak.timereserve.reservation.ReservationService;
-import com.roszpapak.timereserve.tag.Tag;
 import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class BusinessController {
 
     @Autowired
-    BusinessService businessService;
+    private BusinessService businessService;
     @Autowired
-    ReservationService reservationService;
+    private ReservationService reservationService;
 
     @GetMapping("/businesses/findByName")
     @ResponseBody
@@ -55,6 +49,14 @@ public class BusinessController {
         return "mybusiness";
     }
 
+    @PostMapping("/editBusiness")
+    @ResponseBody
+    public void editBusiness(@RequestBody BusinessEditRequest businessEditRequest, @AuthenticationPrincipal User user) {
+
+        System.out.println(businessEditRequest);
+        businessService.editBusiness(businessEditRequest, user);
+
+    }
 
 
 }

@@ -23,9 +23,12 @@ public class Business {
     private Long id;
     private String name;
     private String address;
+
+    @Lob
+    private String image;
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Tag> tags;
-    private String pnumber;
+    private String pNumber;
     private LocalTime startTime;
     private LocalTime endTime;
     private int timeInterval;
@@ -35,11 +38,23 @@ public class Business {
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE)
     private Set<Reservation> reservations;
 
-    public Business(String name, String address, List<Tag> tags, String pnumber, LocalTime startTime, LocalTime endTime, int timeInterval, User user) {
+    public Business(String name, String address, List<Tag> tags, String pNumber, LocalTime startTime, LocalTime endTime, int timeInterval, User user) {
         this.name = name;
         this.address = address;
         this.tags = tags;
-        this.pnumber = pnumber;
+        this.pNumber = pNumber;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.timeInterval = timeInterval;
+        this.user = user;
+    }
+
+    public Business(String name, String address, String image, List<Tag> tags, String pNumber, LocalTime startTime, LocalTime endTime, int timeInterval, User user) {
+        this.name = name;
+        this.address = address;
+        this.image = image;
+        this.tags = tags;
+        this.pNumber = pNumber;
         this.startTime = startTime;
         this.endTime = endTime;
         this.timeInterval = timeInterval;

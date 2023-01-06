@@ -46,16 +46,16 @@ public class UserController {
         return "myprofile";
     }
 
+    @GetMapping("/findAll")
+    @ResponseBody
+    public List<User> findAll() {
+        return userService.findAll();
+    }
+
     @PostMapping("/edituser")
     @ResponseBody
     public String editUser(@RequestBody UserEditRequest userEditRequest, @AuthenticationPrincipal User myProfile) {
-
-        myProfile.setFirstName(userEditRequest.getFirstName());
-        myProfile.setLastName(userEditRequest.getLastName());
-        if (userEditRequest.getPassword() != null) {
-            myProfile.setPassword(bCryptPasswordEncoder.encode(userEditRequest.getPassword()));
-        }
-        userRepository.save(myProfile);
+        userService.updateUser(userEditRequest, myProfile);
         return "Submit";
     }
 

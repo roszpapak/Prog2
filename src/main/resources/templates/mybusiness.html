@@ -41,23 +41,31 @@
     <table class="table table-bordered">
         <thead>
         <tr>
+            <th>Logo</th>
             <th>NAME</th>
             <th>PNUMBER</th>
             <th>ADDRESS</th>
+            <th>TAGS</th>
             <th>StartTime</th>
             <th>EndTime</th>
             <th>TimeInt.</th>
+            <th>Edit</th>
         </tr>
         </thead>
         <tbody>
         <th:block th:each="business : ${myBusiness}">
             <tr>
+                <td><img th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
                 <td>[[${business.name}]]</td>
-                <td>[[${business.pnumber}]]</td>
+                <td>[[${business.pNumber}]]</td>
                 <td>[[${business.address}]]</td>
+                <td><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></td>
                 <td>[[${business.startTime}]]</td>
                 <td>[[${business.endTime}]]</td>
                 <td>[[${business.timeInterval}]]</td>
+                <td class="icon-container">
+                    <i class="fas fa-user-edit icon" id="editButton"></i>
+                </td>
             </tr>
         </th:block>
         </tbody>
@@ -94,11 +102,21 @@
     <div class="editcontainer" id="editbox">
         <div class="modal-content-reg">
             <img alt="" src="/img/WR-icon.png">
-            <form id="sampleForm" method="POST" th:object="${myBusiness}">
-                <input id="firstName" name="firstName" th:field="*{name}" type="text">
-                <input id="lastName" name="lastName" th:field="*{pnumber}" type="text">
-                <input id="email" name="email" th:field="*{address}" type="text">
-                <input id="passwordInput" name="password" th:field="*{startTime}" type="text">
+            <form id="businessEditForm" method="POST"
+                  th:object="${myBusiness}">
+                <span>Name</span>
+                <input id="name" name="name" th:field="*{name}" type="text">
+                <span>Phone Number</span>
+                <input id="pNumber" name="pNumber" th:field="*{pNumber}" type="text">
+                <span>Address</span>
+                <input id="address" name="address" th:field="*{address}" type="text">
+                <span>Tags</span>
+                <input id="tags" name="tags" type="text">
+                <span>Start Time</span>
+                <input id="startTime" name="starTime" th:value="*{startTime}" type="time">
+                <span>End Time</span>
+                <input id="endTime" name="endTime" th:value="*{endTime}" type="time">
+
                 <button id="btnSubmit" type="submit">SAVE</button>
             </form>
         </div>
@@ -107,7 +125,7 @@
 </section>
 
 <script th:src="@{/js/edit.js}"></script>
-<script th:src="@{/js/registration.js}"></script>
+<script th:src="@{/js/businessEdit.js}"></script>
 <script crossorigin="anonymous"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
