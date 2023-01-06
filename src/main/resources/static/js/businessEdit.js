@@ -28,4 +28,27 @@ $(document).ready(function(){
 
     });
 
+    $("#changePictureForm").submit(function (event){
+
+        let formData = new FormData();
+
+        let file = $("#file")[0].files[0];
+
+        formData.append('file',file);
+
+
+         $.ajax({
+             type: "POST",
+             url:'http://localhost:8080/changePicture',
+             data:formData,
+             contentType : false,
+             processData:false
+         })
+         .done(function(){
+               location.reload();
+         });
+    });
+
+
+
 });

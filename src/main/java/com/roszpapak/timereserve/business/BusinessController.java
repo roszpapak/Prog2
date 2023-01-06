@@ -7,7 +7,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -41,6 +43,7 @@ public class BusinessController {
     }
 
     @GetMapping("/mybusiness")
+    @Transactional()
     public String getMyBusiness(Model model, @AuthenticationPrincipal User user) {
 
         Business business = businessService.getByUserId(user.getId());
@@ -52,10 +55,13 @@ public class BusinessController {
     @PostMapping("/editBusiness")
     @ResponseBody
     public void editBusiness(@RequestBody BusinessEditRequest businessEditRequest, @AuthenticationPrincipal User user) {
-
-        System.out.println(businessEditRequest);
         businessService.editBusiness(businessEditRequest, user);
+    }
 
+    @PostMapping("/changePicture")
+    @ResponseBody
+    public void changeProfilePicture(@RequestBody MultipartFile file, @AuthenticationPrincipal User user) {
+        businessService.changeProfilePicutre(file, user);
     }
 
 

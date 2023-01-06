@@ -3,7 +3,11 @@ package com.roszpapak.timereserve.business;
 import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -42,5 +46,21 @@ public class BusinessService {
 
     public Business getByUserId(Long id) {
         return businessRepository.findByUserId(id);
+    }
+
+    public void changeProfilePicutre(MultipartFile file, User user) {
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        if (fileName.contains("..")) {
+            System.out.println("Not a valid file");
+        }
+
+        try {
+            user.getBusiness().setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        businessRepository.save(user.getBusiness());
     }
 }

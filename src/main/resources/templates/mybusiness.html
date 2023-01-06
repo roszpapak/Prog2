@@ -55,7 +55,7 @@
         <tbody>
         <th:block th:each="business : ${myBusiness}">
             <tr>
-                <td><img th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
+                <td><img style="height:100px;" th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
                 <td>[[${business.name}]]</td>
                 <td>[[${business.pNumber}]]</td>
                 <td>[[${business.address}]]</td>
@@ -117,7 +117,15 @@
                 <span>End Time</span>
                 <input id="endTime" name="endTime" th:value="*{endTime}" type="time">
 
-                <button id="btnSubmit" type="submit">SAVE</button>
+                <button class="btn" id="btnSubmit" type="submit">SAVE</button>
+            </form>
+            <form id="changePictureForm">
+                <span>Change Profile Picture</span>
+                <input id="file" name="file" type="file">
+                <button class="btn" id="changePictureFormSubmit" type="submit">
+                    Submit
+                </button>
+
             </form>
         </div>
     </div>
