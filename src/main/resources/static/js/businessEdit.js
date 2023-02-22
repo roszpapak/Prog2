@@ -51,4 +51,48 @@ $(document).ready(function(){
 
 
 
+    $(function() {
+      $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+      }, function(start, end, label) {
+        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        var data = {};
+        data.start = start.format('YYYY-MM-DD');
+        data.end = end.format('YYYY-MM-DD');
+
+        $.ajax({
+         type: "POST",
+         url:'http://localhost:8080/takeHoliday',
+         data:JSON.stringify(data),
+         contentType : 'application/json'
+
+         })
+         .done(function(){
+            location.reload();
+         });
+      });
+
+    });
+
 });
+
+function deleteHoliday(id) {
+      $.ajax({
+           type: "POST",
+           url:'http://localhost:8080/deleteHoliday/'+id,
+           })
+           .done(function(){
+              location.reload();
+           });
+}
+
+
+function deleteReservation(id) {
+      $.ajax({
+           type: "POST",
+           url:'http://localhost:8080/deleteReservation/'+id,
+           })
+           .done(function(){
+              location.reload();
+           });
+}

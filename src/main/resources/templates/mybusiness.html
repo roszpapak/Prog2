@@ -22,7 +22,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
           integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
 
 </head>
 <body>
@@ -55,7 +55,8 @@
         <tbody>
         <th:block th:each="business : ${myBusiness}">
             <tr>
-                <td><img style="height:100px;" th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
+                <td><img alt="No Image" style="height:100px;" th:src="*{'data:image/jpeg;base64,'+ {business.image}}">
+                </td>
                 <td>[[${business.name}]]</td>
                 <td>[[${business.pNumber}]]</td>
                 <td>[[${business.address}]]</td>
@@ -72,6 +73,34 @@
     </table>
 </section>
 
+<section>
+    <input name="daterange" type="text"/>
+    <section id="myHolidays">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="holiday : ${holidays}">
+                <tr>
+                    <td>[[${holiday.startDate}]]</td>
+                    <td>[[${holiday.endDate}]]</td>
+                    <td>
+                        <button class="btn btn-danger" th:onclick="deleteHoliday([[${holiday.id}]])" type="button">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </section>
+</section>
+
 
 <section id="myreservations">
     <table class="table table-bordered">
@@ -81,6 +110,7 @@
             <th>START</th>
             <th>END</th>
             <th>CLIENT</th>
+            <th>Delete</th>
 
         </tr>
         </thead>
@@ -91,6 +121,11 @@
                 <td>[[${reservation.startTime}]]</td>
                 <td>[[${reservation.endTime}]]</td>
                 <td><span th:each="user :${reservation.user}"> [[${user.firstName + "    " + user.lastName}]]</span>
+                </td>
+                <td>
+                    <button class="btn btn-danger" th:onclick="deleteReservation([[${reservation.id}]])" type="button">
+                        Delete
+                    </button>
                 </td>
             </tr>
         </th:block>
@@ -140,5 +175,7 @@
 <script crossorigin="anonymous"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 </body>
 </html>

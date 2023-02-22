@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -19,26 +19,56 @@
     <script crossorigin="anonymous"
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
 
 </head>
 <body>
-<form method="post" name="f" th:action="@{/login}">
-    <fieldset>
-        <div class="alert alert-error" th:if="${param.error}">
-            Invalid username or password;
-        </div>
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password">
-        <div class="form-actions">
-            <button class="btn" type="submit">Log In</button>
-        </div>
-        <button class="btn"><a th:href="@{/registration}">REGISTRATION</a></button>
-        <button class="btn"><a th:href="@{/home}">MAIN PAGE</a></button>
+<section id="header">
+    <div class="container">
 
-    </fieldset>
-</form>
+        <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
+
+
+        <div class="content">
+
+            <a sec:authorize="hasAuthority('BUSINESSOWNER')" th:href="@{/mybusiness}">
+                <button class="button">MYBUSINESS</button>
+            </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/myprofile}">
+                <button class="button">MYPROFILE</button>
+            </a>
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/login}">
+                <button class="button">Log In</button>
+            </a>
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
+                <button class="button">Sign In</button>
+            </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+                <button class="button">LOG OUT</button>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+<div class="loginForm">
+    <form method="post" name="f" th:action="@{/login}">
+        <fieldset>
+            <div class="alert alert-error" th:if="${param.error}">
+                Invalid username or password;
+            </div>
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text"> <br><br>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password">
+            <div class="form-actions">
+                <button class="btn" style="margin: 1rem;" type="submit">Log In</button>
+            </div>
+            <button class="btn"><a style="color:black;" th:href="@{/registration}">REGISTRATION</a></button>
+        </fieldset>
+    </form>
+</div>
+
 </body>

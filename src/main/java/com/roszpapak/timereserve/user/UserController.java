@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -39,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/myprofile")
+    @Transactional
     public String getMyProfile(Model model, @AuthenticationPrincipal User myProfile) {
         List<Reservation> reservations = reservationService.getByUserId(myProfile.getId());
         model.addAttribute("myProfile", myProfile);

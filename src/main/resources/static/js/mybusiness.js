@@ -11,9 +11,6 @@ $(function(){
 
     var maxDate = year + '-' + month + '-' + day;
 
-    // or instead:
-    // var maxDate = dtToday.toISOString().substr(0, 10);
-
     alert(maxDate);
     $('#txtDate').attr('min', maxDate);
 });

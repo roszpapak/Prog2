@@ -50,4 +50,11 @@ public class ReservationController {
 
         return "Hello";
     }
+
+
+    @PostMapping("/deleteReservation/{id}")
+    @ResponseBody
+    public void deleteReservation(@PathVariable Long id) {
+        reservationService.deleteById(id);
+    }
 }

@@ -61,7 +61,8 @@
             <tbody>
             <th:block th:each="business : ${businessById}">
                 <tr>
-                    <td><img style="height:100px;" th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
+                    <td><img alt="No Image" style="height:100px;"
+                             th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
                     <td>[[${business.name}]]</td>
                     <td>[[${business.address}]]</td>
                     <td>[[${business.pNumber}]]</td>

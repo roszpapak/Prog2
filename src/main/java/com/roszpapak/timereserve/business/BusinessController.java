@@ -1,5 +1,6 @@
 package com.roszpapak.timereserve.business;
 
+import com.roszpapak.timereserve.DTO.HolidayRequest;
 import com.roszpapak.timereserve.reservation.ReservationService;
 import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class BusinessController {
         Business business = businessService.getByUserId(user.getId());
         model.addAttribute("myBusiness", business);
         model.addAttribute("myBusinessReservations", reservationService.getByBusinessId(business.getId()));
+        model.addAttribute("holidays", businessService.listHolidays(user.getBusiness().getId()));
+
         return "mybusiness";
     }
 
@@ -62,6 +65,13 @@ public class BusinessController {
     @ResponseBody
     public void changeProfilePicture(@RequestBody MultipartFile file, @AuthenticationPrincipal User user) {
         businessService.changeProfilePicutre(file, user);
+    }
+
+    @PostMapping("/takeHoliday")
+    @ResponseBody
+    public void takeHoliday(@RequestBody HolidayRequest holidayRequest,
+                            @AuthenticationPrincipal User user) {
+        businessService.takeHoliday(holidayRequest, user);
     }
 
 

@@ -1,5 +1,8 @@
 package com.roszpapak.timereserve.business;
 
+import com.roszpapak.timereserve.DTO.HolidayRequest;
+import com.roszpapak.timereserve.holiday.Holiday;
+import com.roszpapak.timereserve.holiday.HolidayRepository;
 import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ public class BusinessService {
 
     @Autowired
     private BusinessRepository businessRepository;
+
+    @Autowired
+    private HolidayRepository holidayRepository;
 
     public void editBusiness(BusinessEditRequest businessEditRequest, User user) {
 
@@ -62,5 +68,14 @@ public class BusinessService {
         }
 
         businessRepository.save(user.getBusiness());
+    }
+
+    public void takeHoliday(HolidayRequest holidayRequest, User user) {
+
+        holidayRepository.save(new Holiday(holidayRequest.getStart(), holidayRequest.getEnd(), user.getBusiness().getId()));
+    }
+
+    public List<Holiday> listHolidays(Long id) {
+        return holidayRepository.findByBusinessId(id);
     }
 }
