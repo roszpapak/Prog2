@@ -1,6 +1,7 @@
 package com.roszpapak.timereserve.business;
 
-import com.roszpapak.timereserve.DTO.HolidayRequest;
+import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
+import com.roszpapak.timereserve.rating.RatingService;
 import com.roszpapak.timereserve.reservation.ReservationService;
 import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class BusinessController {
     private BusinessService businessService;
     @Autowired
     private ReservationService reservationService;
+    @Autowired
+    private RatingService ratingService;
 
     @GetMapping("/businesses/findByName")
     @ResponseBody
@@ -40,6 +43,7 @@ public class BusinessController {
     @GetMapping("/businesses/{id}")
     public String getBusinessById(Model model, @PathVariable Long id) {
         model.addAttribute("businessById", businessService.listById(id));
+        model.addAttribute("ratings", ratingService.getRatingById(id));
         return "business";
     }
 
@@ -51,6 +55,7 @@ public class BusinessController {
         model.addAttribute("myBusiness", business);
         model.addAttribute("myBusinessReservations", reservationService.getByBusinessId(business.getId()));
         model.addAttribute("holidays", businessService.listHolidays(user.getBusiness().getId()));
+
 
         return "mybusiness";
     }
@@ -69,9 +74,9 @@ public class BusinessController {
 
     @PostMapping("/takeHoliday")
     @ResponseBody
-    public void takeHoliday(@RequestBody HolidayRequest holidayRequest,
+    public void takeHoliday(@RequestBody HolidayRequestDTO holidayRequestDTO,
                             @AuthenticationPrincipal User user) {
-        businessService.takeHoliday(holidayRequest, user);
+        businessService.takeHoliday(holidayRequestDTO, user);
     }
 
 

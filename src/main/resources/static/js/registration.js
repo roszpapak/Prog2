@@ -1,12 +1,10 @@
 $(document).ready(function(){
 
 function myFunction() {
-    console.log("papa");
     var x = document.getElementById("passwordInput");
     if (x.type === "password") {
       x.type = "text";
     } else {
-    console.log("elseag");
       x.type = "password";
     }
  };

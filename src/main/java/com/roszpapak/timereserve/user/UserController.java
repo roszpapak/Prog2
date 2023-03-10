@@ -1,31 +1,29 @@
 package com.roszpapak.timereserve.user;
 
+import com.roszpapak.timereserve.message.MessageService;
 import com.roszpapak.timereserve.reservation.Reservation;
 import com.roszpapak.timereserve.reservation.ReservationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class UserController {
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private ReservationService reservationService;
     @Autowired
     private UserService userService;
+
     @Autowired
-    private UserRepository userRepository;
+    private MessageService messageService;
+
 
     @GetMapping("/users")
     public String getUsers(Model model, String keyword) {
@@ -37,6 +35,15 @@ public class UserController {
         } else
             model.addAttribute("listUsers", listUsers);
         return "users";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getBusinessById(Model model, @PathVariable Long id, @AuthenticationPrincipal User user) {
+        if (userService.findById(id).isPresent()) {
+            model.addAttribute("users", userService.findById(id).get());
+            model.addAttribute("messages", messageService.getChatMessages(user.getId(), id));
+        }
+        return "user";
     }
 
     @GetMapping("/myprofile")
@@ -59,6 +66,12 @@ public class UserController {
     public String editUser(@RequestBody UserEditRequest userEditRequest, @AuthenticationPrincipal User myProfile) {
         userService.updateUser(userEditRequest, myProfile);
         return "Submit";
+    }
+
+    @GetMapping("/getLoggedUser")
+    @ResponseBody
+    public Long loggedInUser(@AuthenticationPrincipal User user) {
+        return user.getId();
     }
 
 

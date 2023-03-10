@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Teszt</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+</head>
+<body>
+<textarea cols="35" id="chat" rows="10"></textarea>
+<br/>
+<input id="message" size="40" type="text">
+<br/>
+<button id="send" onclick="send()" type="button">Send</button>
+<script th:src="@{/js/chat.js}"></script>
+
+</body>
+</html>

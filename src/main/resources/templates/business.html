@@ -22,6 +22,7 @@
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
           integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/rating.css}">
 
 
 </head>
@@ -84,6 +85,26 @@
         <form id="reservationSave">
             <input id="reservationSaveButton" style="display:none" type="submit" value="Save The Date">
         </form>
+        <div class="rating" th:object="${businessById}">
+            <div class="rate">
+                <span class="fa fa-star" id="star1" th:onclick="starColorChange(this.id)"></span>
+                <span class="fa fa-star" id="star2" th:onclick="starColorChange(this.id)"></span>
+                <span class="fa fa-star" id="star3" th:onclick="starColorChange(this.id)"></span>
+                <span class="fa fa-star" id="star4" th:onclick="starColorChange(this.id)"></span>
+                <span class="fa fa-star" id="star5" th:onclick="starColorChange(this.id)"></span>
+            </div>
+            <label>Enter your opinion about this service!</label>
+            <textarea class="rateMessage" cols="50" id="rateMessage" rows="4"></textarea>
+            <button th:onclick="rateBusiness([[${businessById.id}]],[[${#authentication.principal.id}]])">Send rating
+            </button>
+        </div>
+        <div th:each="rating : ${ratings}">
+            <div>
+                <p>[[${rating.message}]]</p>
+                <p>[[${rating.value}]]</p>
+            </div>
+
+        </div>
 
 
     </div>
@@ -93,6 +114,7 @@
 
 <script th:src="@{/js/reservation.js}"></script>
 <script th:src="@{/js/reservationsave.js}"></script>
+<script th:src="@{/js/rating.js}"></script>
 <script crossorigin="anonymous"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

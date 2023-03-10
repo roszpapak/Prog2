@@ -1,6 +1,6 @@
 package com.roszpapak.timereserve.business;
 
-import com.roszpapak.timereserve.DTO.HolidayRequest;
+import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
 import com.roszpapak.timereserve.holiday.Holiday;
 import com.roszpapak.timereserve.holiday.HolidayRepository;
 import com.roszpapak.timereserve.user.User;
@@ -70,9 +70,9 @@ public class BusinessService {
         businessRepository.save(user.getBusiness());
     }
 
-    public void takeHoliday(HolidayRequest holidayRequest, User user) {
+    public void takeHoliday(HolidayRequestDTO holidayRequestDTO, User user) {
 
-        holidayRepository.save(new Holiday(holidayRequest.getStart(), holidayRequest.getEnd(), user.getBusiness().getId()));
+        holidayRepository.save(new Holiday(holidayRequestDTO.getStart(), holidayRequestDTO.getEnd(), user.getBusiness().getId()));
     }
 
     public List<Holiday> listHolidays(Long id) {

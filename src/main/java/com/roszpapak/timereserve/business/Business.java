@@ -23,7 +23,6 @@ public class Business {
     private Long id;
     private String name;
     private String address;
-
     @Lob
     private String image;
     @ManyToMany(cascade = CascadeType.PERSIST)

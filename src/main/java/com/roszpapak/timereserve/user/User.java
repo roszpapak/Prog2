@@ -34,10 +34,10 @@ public class User implements UserDetails {
     private String password;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Business business;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE,fetch= FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Reservation> reservations;
     @Enumerated(EnumType.STRING)
-    private UserRole UserRole = com.roszpapak.timereserve.user.UserRole.USER;
+    private UserRole userRole = com.roszpapak.timereserve.user.UserRole.USER;
     private boolean locked = false;
     private boolean enabled = false;
 
@@ -48,7 +48,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.business = business;
-        UserRole = userRole;
+        this.userRole = userRole;
     }
 
 
@@ -64,12 +64,12 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        UserRole = userRole;
+        this.userRole = userRole;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(UserRole.name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
         return Collections.singletonList(authority);
     }
 
