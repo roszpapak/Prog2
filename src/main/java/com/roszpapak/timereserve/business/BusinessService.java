@@ -78,4 +78,8 @@ public class BusinessService {
     public List<Holiday> listHolidays(Long id) {
         return holidayRepository.findByBusinessId(id);
     }
+
+    public String getUserIdByBusiness(Long id) {
+        return String.valueOf(businessRepository.findById(id).get().getUser().getId());
+    }
 }

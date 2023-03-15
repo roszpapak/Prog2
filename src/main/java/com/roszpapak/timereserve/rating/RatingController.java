@@ -18,6 +18,12 @@ public class RatingController {
         return ratingService.getRatingById(businessId);
     }
 
+    @GetMapping("rating/average/{businessId}")
+    @ResponseBody
+    public String getAvgRatingById(@PathVariable Long businessId) {
+        return ratingService.getAvgRatingById(businessId);
+    }
+
     @PostMapping("/rating/save")
     @ResponseBody
     public void saveRate(@RequestBody Rating rating) {

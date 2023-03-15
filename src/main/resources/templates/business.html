@@ -19,10 +19,13 @@
     <script crossorigin="anonymous"
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
           integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/rating.css}">
+    <link rel="stylesheet" th:href="@{/css/business.css}">
 
 
 </head>
@@ -47,63 +50,86 @@
 </section>
 
 <section id="business">
-    <div>
-        <table class="table table-bordered" id="businessTable">
-            <thead>
-            <tr>
-                <th>Logo</th>
-                <th>NAME</th>
-                <th>ADDRESS</th>
-                <th>PHONE NUMBER</th>
-                <th>TAGS</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="business : ${businessById}">
-                <tr>
-                    <td><img alt="No Image" style="height:100px;"
-                             th:src="*{'data:image/jpeg;base64,'+ {business.image}}"></td>
-                    <td>[[${business.name}]]</td>
-                    <td>[[${business.address}]]</td>
-                    <td>[[${business.pNumber}]]</td>
-                    <td><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></td>
-                </tr>
-            </th:block>
-
-
-            </tbody>
-        </table>
-
-        <form id="reservationSearch">
-            <label>Reservation Date</label>
-            <input id="reservationDateInput" type="date">
-            <input type="submit">
-            <select id="reservationSelect">
-            </select>
-        </form>
-        <form id="reservationSave">
-            <input id="reservationSaveButton" style="display:none" type="submit" value="Save The Date">
-        </form>
-        <div class="rating" th:object="${businessById}">
-            <div class="rate">
-                <span class="fa fa-star" id="star1" th:onclick="starColorChange(this.id)"></span>
-                <span class="fa fa-star" id="star2" th:onclick="starColorChange(this.id)"></span>
-                <span class="fa fa-star" id="star3" th:onclick="starColorChange(this.id)"></span>
-                <span class="fa fa-star" id="star4" th:onclick="starColorChange(this.id)"></span>
-                <span class="fa fa-star" id="star5" th:onclick="starColorChange(this.id)"></span>
+    <div class="container mainContainer " th:each="business : ${businessById}">
+        <div class="row">
+            <div class="col-3">
+                <div>
+                    <img alt="No Image" class="profilePicture"
+                         th:src="*{'data:image/jpeg;base64,'+ {business.image}}">
+                </div>
+                <div class="decorationLine"></div>
+                <div>
+                    <h3>Address</h3>
+                    <p>[[${business.address}]]</p>
+                    <h3>Phone number</h3>
+                    <p>[[${business.pNumber}]]</p>
+                </div>
+                <div class="decorationLine"></div>
+                <h3>Services</h3>
+                <p><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></p>
             </div>
-            <label>Enter your opinion about this service!</label>
-            <textarea class="rateMessage" cols="50" id="rateMessage" rows="4"></textarea>
-            <button th:onclick="rateBusiness([[${businessById.id}]],[[${#authentication.principal.id}]])">Send rating
-            </button>
-        </div>
-        <div th:each="rating : ${ratings}">
-            <div>
-                <p>[[${rating.message}]]</p>
-                <p>[[${rating.value}]]</p>
-            </div>
+            <div class="col-9">
+                <h1>[[${business.name}]]</h1>
+                <div class="rating">
+                    <p id="avgRating"></p>
+                    <div>
+                        <span class="fa fa-star" id="rateStar1"></span>
+                        <span class="fa fa-star" id="rateStar2"></span>
+                        <span class="fa fa-star" id="rateStar3"></span>
+                        <span class="fa fa-star" id="rateStar4"></span>
+                        <span class="fa fa-star" id="rateStar5"></span>
+                    </div>
+                </div>
+                <div class="decorationLine"></div>
+                <div class="actionHolder">
+                    <p id="feedbacks" onclick="changeAction(this.id)">Feedbacks</p>
+                    <p id="saveDate" onclick="changeAction(this.id)">Save Date</p>
+                    <p id="sendFeedbacks" onclick="changeAction(this.id)">Send Feedbacks</p>
+                    <p id="chat" onclick="changeAction(this.id)">Chat</p>
+                </div>
+                <div class="noDisplay" id="saveDateBox">
+                    <form id="reservationSearch">
+                        <label>Reservation Date</label>
+                        <input id="reservationDateInput" type="date">
+                        <input type="submit"><br>
+                        <select id="reservationSelect">
+                        </select>
+                        <input id="reservationSaveButton" style="display:none" type="submit" value="Save The Date">
+                    </form>
+                </div>
+                <div class="noDisplay" id="sendFeedbacksBox">
+                    <div class="ratings" th:object="${businessById}">
+                        <div class="rate">
+                            <span class="fa fa-star checked" id="star1" th:onclick="starColorChange(this.id)"></span>
+                            <span class="fa fa-star" id="star2" th:onclick="starColorChange(this.id)"></span>
+                            <span class="fa fa-star" id="star3" th:onclick="starColorChange(this.id)"></span>
+                            <span class="fa fa-star" id="star4" th:onclick="starColorChange(this.id)"></span>
+                            <span class="fa fa-star" id="star5" th:onclick="starColorChange(this.id)"></span>
+                        </div>
+                        <p>Enter your opinion about this service!</p>
+                        <textarea class="rateMessage" cols="50" id="rateMessage" rows="4"></textarea><br>
+                        <button th:onclick="rateBusiness([[${businessById.id}]],[[${#authentication.principal.id}]])">
+                            Send rating
+                        </button>
+                    </div>
+                </div>
 
+                <div class="display" id="feedbacksBox">
+                    <div th:each="rating : ${ratings}">
+                        <p>[[${rating.message}]]</p>
+                        <p>[[${rating.value}]]</p>
+                    </div>
+                </div>
+                <div class="noDisplay" id="chatBox">
+                    <div id="chats">
+                        <p th:class="${message.fromId}" th:each="message : ${messages}">
+                            [[${message.messageContent}]]</p>
+                    </div>
+                    <input id="chatMessage" size="40" type="text">
+                    <br/>
+                    <button id="send" onclick="send()" type="button">Send</button>
+                </div>
+            </div>
         </div>
 
 
@@ -115,6 +141,8 @@
 <script th:src="@{/js/reservation.js}"></script>
 <script th:src="@{/js/reservationsave.js}"></script>
 <script th:src="@{/js/rating.js}"></script>
+<script th:src="@{/js/business.js}"></script>
+<script th:src="@{/js/businessChat.js}"></script>
 <script crossorigin="anonymous"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

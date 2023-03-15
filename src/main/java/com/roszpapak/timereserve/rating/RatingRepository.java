@@ -13,4 +13,7 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     List<Rating> findByToId(Long id);
 
     Optional<Rating> findByToIdAndFromId(Long toId, Long fromId);
+
+    @Query(value = "SELECT AVG(value) FROM rating  where to_Id = ?1", nativeQuery = true)
+    Optional<Double> getAvgRatingById(Long businessId);
 }

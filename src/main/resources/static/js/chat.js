@@ -56,10 +56,8 @@ function send() {
 }
 
 function addStyleToMessages(){
-    console.log("addStyleToMessages");
     var elements = document.getElementsByClassName(fromId);
     for (var i = 0; i < elements.length; i++) {
-        console.log(elements[i]);
         elements[i].style.textAlign = "right";
       }
 }
@@ -71,7 +69,6 @@ function getUserId() {
             url: "http://localhost:8080/getLoggedUser",
             type: "GET",
             success: function(id) {
-                console.log("Logged in user: " + id);
                 resolve(id);
             },
             error: function(error) {

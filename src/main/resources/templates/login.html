@@ -59,14 +59,15 @@
             <div class="alert alert-error" th:if="${param.error}">
                 Invalid username or password;
             </div>
-            <label for="username">Username</label>
-            <input id="username" name="username" type="text"> <br><br>
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password">
+            <label for="username">Username</label><br>
+            <input id="username" name="username" placeholder="Username" type="text"> <br><br>
+            <label for="password">Password</label><br>
+            <input id="password" name="password" placeholder="Password" type="password"><br><br>
             <div class="form-actions">
-                <button class="btn" style="margin: 1rem;" type="submit">Log In</button>
+                <button class="regButton" type="submit">LOG IN</button>
             </div>
-            <button class="btn"><a style="color:black;" th:href="@{/registration}">REGISTRATION</a></button>
+            <br>
+            <button class="regButton"><a class="regRef" th:href="@{/registration}">REGISTRATION</a></button>
         </fieldset>
     </form>
 </div>

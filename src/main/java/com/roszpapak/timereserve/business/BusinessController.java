@@ -1,6 +1,7 @@
 package com.roszpapak.timereserve.business;
 
 import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
+import com.roszpapak.timereserve.message.MessageService;
 import com.roszpapak.timereserve.rating.RatingService;
 import com.roszpapak.timereserve.reservation.ReservationService;
 import com.roszpapak.timereserve.user.User;
@@ -23,6 +24,8 @@ public class BusinessController {
     private ReservationService reservationService;
     @Autowired
     private RatingService ratingService;
+    @Autowired
+    private MessageService messageService;
 
     @GetMapping("/businesses/findByName")
     @ResponseBody
@@ -41,9 +44,10 @@ public class BusinessController {
     }
 
     @GetMapping("/businesses/{id}")
-    public String getBusinessById(Model model, @PathVariable Long id) {
+    public String getBusinessById(Model model, @PathVariable Long id, @AuthenticationPrincipal User user) {
         model.addAttribute("businessById", businessService.listById(id));
         model.addAttribute("ratings", ratingService.getRatingById(id));
+        model.addAttribute("messages", messageService.getChatMessages(user.getId(), businessService.listById(id).getUser().getId()));
         return "business";
     }
 
@@ -79,6 +83,12 @@ public class BusinessController {
         businessService.takeHoliday(holidayRequestDTO, user);
     }
 
+
+    @GetMapping("/getUserId/business/{id}")
+    @ResponseBody
+    public String getUserByBusiness(@PathVariable Long id) {
+        return businessService.getUserIdByBusiness(id);
+    }
 
 }
 

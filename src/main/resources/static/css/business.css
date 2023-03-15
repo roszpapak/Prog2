@@ -1,0 +1,68 @@
+.mainContainer{
+    margin-top: 7%!important;
+}
+
+.profilePicture{
+    height: 15rem;
+}
+
+.decorationLine{
+    height: 0.009rem;
+    background-color: grey;
+    margin: 1.4rem 0rem;
+    margin-right: 15%;
+}
+
+.checked {
+  color: #55a8c9;
+}
+
+.rateMessage{
+    outline: none !important;
+}
+
+.rateMessage:focus{
+    border: 2px solid #26a0da;
+}
+
+.rating{
+    display: flex;
+    font-size: 1.2rem;
+    align-items: center;
+}
+
+
+#avgRating{
+    margin: 0% 2% 0% 0%;
+    font-size: 2rem;
+}
+
+.actionHolder{
+    display: flex;
+}
+
+.actionHolder p{
+    margin: 0% 5%;
+}
+
+.display{
+    display:block;
+}
+
+.noDisplay{
+    display:none;
+}
+
+.ratings{
+    margin-top:10%;
+}
+
+#chats{
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+#chats p{
+    margin: 1% 5%
+}
