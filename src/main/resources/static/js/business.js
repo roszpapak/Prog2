@@ -39,6 +39,12 @@ function changeAction(id){
     })
     const getId = id+"Box";
     console.log(getId);
-    const elem = document.getElementById(getId);
-    elem.style.display = "block";
+    if(getId != "feedbacksBox"){
+        const elem = document.getElementById(getId);
+        elem.style.display = "block";
+    } else{
+        const elem = document.getElementById(getId);
+        elem.style.display = "flex";
+    }
+
 }

@@ -76,7 +76,7 @@
         <tbody>
         <th:block th:each="reservation : ${myReservations}">
             <tr>
-                <td>[[${reservation.date}]]</td>
+                <td>[[${reservation.reservationDate}]]</td>
                 <td>[[${reservation.startTime}]]</td>
                 <td>[[${reservation.endTime}]]</td>
                 <td><span th:each="business :${reservation.business}"> [[${business.name}]]</span>

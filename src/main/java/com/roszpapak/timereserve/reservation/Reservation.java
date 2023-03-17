@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -21,7 +21,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Date date;
+    private LocalDate reservationDate;
     private LocalTime startTime;
     private LocalTime endTime;
     @ManyToOne
@@ -32,8 +32,8 @@ public class Reservation {
     private User user;
 
 
-    public Reservation(Date date, LocalTime startTime, LocalTime endTime, Business business, User user) {
-        this.date = date;
+    public Reservation(LocalDate reservationDate, LocalTime startTime, LocalTime endTime, Business business, User user) {
+        this.reservationDate = reservationDate;
         this.startTime = startTime;
         this.endTime = endTime;
         this.business = business;

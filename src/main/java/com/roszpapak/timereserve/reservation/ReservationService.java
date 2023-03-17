@@ -66,7 +66,7 @@ public class ReservationService {
 
         Set<Pair<LocalTime, LocalTime>> possibleReservations = new LinkedHashSet<>();
 
-        if (holidayRepository.findByBusinessIdAndDate(businessId, date).isPresent()) {
+        if (!holidayRepository.findByBusinessIdAndDate(businessId, date).isEmpty()) {
             return possibleReservations;
         }
 
@@ -79,7 +79,7 @@ public class ReservationService {
 
         Set<Pair<LocalTime, LocalTime>> allReservations = initializeReservations(interval, startTime, endTime);
 
-        List<Reservation> reservationsForBusinessOnDay = reservationRepository.getReservationsForBusinessOnDay(businessId, date);
+        List<Reservation> reservationsForBusinessOnDay = reservationRepository.findByReservationDate(date);
 
 
         for (Pair<LocalTime, LocalTime> actual : allReservations) {

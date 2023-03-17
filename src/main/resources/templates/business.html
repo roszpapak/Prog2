@@ -94,7 +94,9 @@
                         <input type="submit"><br>
                         <select id="reservationSelect">
                         </select>
-                        <input id="reservationSaveButton" style="display:none" type="submit" value="Save The Date">
+                        <button id="reservationSaveButton" onclick="saveRegistration()" style="display:none">Save The
+                            Date
+                        </button>
                     </form>
                 </div>
                 <div class="noDisplay" id="sendFeedbacksBox">
@@ -115,8 +117,16 @@
                 </div>
 
                 <div class="display" id="feedbacksBox">
-                    <div th:each="rating : ${ratings}">
+                    <div class="ratingBox" th:each="rating : ${ratings}">
+                        <p class="ratingText">[[${rating.message}]]</p>
+                        <p>[[${rating.value}]]</p>
+                    </div>
+                    <div class="ratingBox" th:each="rating : ${ratings}">
                         <p>[[${rating.message}]]</p>
+                        <p>[[${rating.value}]]</p>
+                    </div>
+                    <div class="ratingBox" th:each="rating : ${ratings}">
+                        <p>Nagyon Fain</p>
                         <p>[[${rating.value}]]</p>
                     </div>
                 </div>

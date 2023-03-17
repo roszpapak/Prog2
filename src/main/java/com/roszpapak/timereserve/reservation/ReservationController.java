@@ -9,9 +9,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 
 @Controller
@@ -43,7 +46,8 @@ public class ReservationController {
         if (businessOptional.isPresent()) {
             Business business = businessRepository.findById(reservationRequest.getBusinessId()).get();
             LocalTime endTime = reservationRequest.getStartTime().plusMinutes(business.getTimeInterval());
-            Reservation reservation = new Reservation(reservationRequest.getDate(), reservationRequest.getStartTime(), endTime, business, user);
+            Date date = reservationRequest.getDate();
+            Reservation reservation = new Reservation(LocalDate.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault()), reservationRequest.getStartTime(), endTime, business, user);
             reservationRepository.save(reservation);
         }
 

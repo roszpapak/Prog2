@@ -117,7 +117,7 @@
         <tbody>
         <th:block th:each="reservation : ${myBusinessReservations}">
             <tr>
-                <td>[[${reservation.date}]]</td>
+                <td>[[${reservation.reservationDate}]]</td>
                 <td>[[${reservation.startTime}]]</td>
                 <td>[[${reservation.endTime}]]</td>
                 <td><span th:each="user :${reservation.user}"> [[${user.firstName + "    " + user.lastName}]]</span>

@@ -46,7 +46,8 @@
 }
 
 .display{
-    display:block;
+    display:flex;
+    flex-wrap: wrap;
 }
 
 .noDisplay{
@@ -65,4 +66,17 @@
 
 #chats p{
     margin: 1% 5%
+}
+
+.ratingBox{
+    width:25%;
+    margin:3%;
+    padding:3%;
+    background-color: #55a8c9;;
+    color: white;
+    border-radius: 12px;
+}
+
+.ratingText{
+    height: 75%;
 }
