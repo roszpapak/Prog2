@@ -13,4 +13,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             "order by received_date"
             , nativeQuery = true)
     List<Message> findAllChatMessages(Long from, Long to);
+
+    List<Message> findByFromIdAndToId(Long fromId, Long toId);
+
+    @Query(value = "SELECT from_id FROM Message where to_id = ?1 and seen = false group by from_id"
+            , nativeQuery = true)
+    List<Long> findByToIdAndSeen(Long id);
 }

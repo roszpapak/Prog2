@@ -1,5 +1,6 @@
 package com.roszpapak.timereserve.business;
 
+import com.roszpapak.timereserve.DTO.BusinessDTO;
 import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
 import com.roszpapak.timereserve.message.MessageService;
 import com.roszpapak.timereserve.rating.RatingService;
@@ -29,7 +30,7 @@ public class BusinessController {
 
     @GetMapping("/businesses/findByName")
     @ResponseBody
-    public List<Business> getBusinesses(@RequestParam String keyword) {
+    public List<BusinessDTO> getBusinesses(@RequestParam String keyword) {
         if (keyword != null) {
             return businessService.listByName(keyword.toLowerCase());
         } else {
@@ -59,7 +60,7 @@ public class BusinessController {
         model.addAttribute("myBusiness", business);
         model.addAttribute("myBusinessReservations", reservationService.getByBusinessId(business.getId()));
         model.addAttribute("holidays", businessService.listHolidays(user.getBusiness().getId()));
-
+        model.addAttribute("unreadMessages", messageService.getUnseenMessages(user.getId()));
 
         return "mybusiness";
     }

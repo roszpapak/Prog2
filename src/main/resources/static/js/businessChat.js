@@ -27,6 +27,7 @@ function  connect() {
                         appendToChat(greeting.body);
                     });
                 });
+            setMessageSeen();
             addStyleToMessages();
         }).catch(function(error) {
               console.log("Error retrieving user ID from Business ID: " + error);
@@ -38,6 +39,7 @@ function  connect() {
 }
 
 function appendToChat(message) {
+    console.log(message)
     const chatDiv = $("#chats");
     var object = JSON.parse(message);
     const para = document.createElement("p");
@@ -46,6 +48,16 @@ function appendToChat(message) {
     if(object.fromId == fromId){
         para.style.textAlign = "right";
     }
+    if(object.fromId == toId){
+        console.log("Should be seen!");
+        $.ajax({
+          url: "http://localhost:8080/setMessageSeen/"+object.id,
+          type: "GET"
+        });
+    }
+
+
+
     chatDiv.append(para);
     chatDiv.scrollTop(chatDiv.prop('scrollHeight'));
 }
@@ -99,5 +111,14 @@ function getUserId(id) {
         });
     });
 }
+
+function setMessageSeen(){
+    $.ajax({
+        url: "http://localhost:8080/setMessagesSeen/"+fromId+"/"+toId,
+        type: "GET"
+    });
+}
+
+
 
 connect();

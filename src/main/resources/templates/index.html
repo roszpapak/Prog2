@@ -45,7 +45,6 @@
             <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
                 <button class="button">LOG OUT</button>
             </a>
-
         </div>
 
     </div>
@@ -55,10 +54,11 @@
     <div class="maincontainer">
         <p class="maintext">KERESD MEG A NEKED <br> MEGFELELŐ SZOLGÁLTATÁST</p>
         <div class="content">
-            <div class="content-box"  sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')">
+            <div class="content-box" sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')">
                 <a class="regbutton" id="registrationButton"
                    sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">REGISZTRACIO</a>
-                <a class="regbutton" id="loginButton" sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')"
+                <a class="regbutton" id="loginButton"
+                   sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')"
                    th:href="@{/login}">BELEPES</a>
             </div>
             <div class="content-box">

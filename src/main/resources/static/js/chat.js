@@ -26,6 +26,7 @@ function  connect() {
                     appendToChat(greeting.body);
                 });
             });
+        setMessageSeen();
         addStyleToMessages();
         }).catch(function(error) {
             console.log("Error retrieving user ID: " + error);
@@ -41,6 +42,13 @@ function appendToChat(message) {
     if(object.fromId == fromId){
         para.style.textAlign = "right";
     }
+    if(object.fromId == toId){
+        console.log("Should be seen!");
+        $.ajax({
+        url: "http://localhost:8080/setMessageSeen/"+object.id,
+        type: "GET"
+        });
+    }
     $("#chatBox").append(para);
 }
 
@@ -53,6 +61,7 @@ function send() {
     let url = '/app/sendMessage/' + endpoint;
     data.message = $("#chatMessage").val();
     stompClient.send(url, {},JSON.stringify(data));
+    $("#chatMessage").val('');
 }
 
 function addStyleToMessages(){
@@ -75,6 +84,13 @@ function getUserId() {
                 reject(error);
             }
         });
+    });
+}
+
+function setMessageSeen(){
+    $.ajax({
+        url: "http://localhost:8080/setMessagesSeen/"+fromId+"/"+toId,
+        type: "GET"
     });
 }
 

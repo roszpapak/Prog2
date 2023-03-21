@@ -46,5 +46,10 @@ function changeAction(id){
         const elem = document.getElementById(getId);
         elem.style.display = "flex";
     }
+    if(getId == "chatBox"){
+        const chatDiv = $("#chats");
+        chatDiv.scrollTop(chatDiv.prop('scrollHeight'));
+    }
+
 
 }

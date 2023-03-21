@@ -1,0 +1,13 @@
+.unreadContent{
+    position: fixed;
+    bottom: 0%;
+    right: 0%;
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: scroll;
+    padding-right: 200px;
+}
+
+.unreadContent p:hover {
+    cursor: pointer;
+}

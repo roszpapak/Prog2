@@ -18,12 +18,20 @@ $(document).ready(function(){
                  url:'http://localhost:8080/edituser' ,
                  data:JSON.stringify(data),
                  contentType : 'application/json'
-
              })
              .done(function(){
                 location.reload();
              });
-
     });
-
 });
+
+
+function deleteReservation(id) {
+      $.ajax({
+           type: "POST",
+           url:'http://localhost:8080/deleteReservation/'+id,
+           })
+           .done(function(){
+              location.reload();
+           });
+}

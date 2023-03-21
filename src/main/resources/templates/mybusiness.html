@@ -20,6 +20,7 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/myBusiness.css}">
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
           integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
@@ -32,7 +33,10 @@
         <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
 
         <div class="content">
-
+            <div class="unreadContent">
+                <p th:each="message : ${unreadMessages}" th:onclick="goToUser([[${message.id}]])">New message
+                    from:[[${message.name}]]</p>
+            </div>
         </div>
 
     </div>
@@ -168,6 +172,7 @@
 </section>
 
 <script th:src="@{/js/edit.js}"></script>
+<script th:src="@{/js/goToUser.js}"></script>
 <script th:src="@{/js/businessEdit.js}"></script>
 <script crossorigin="anonymous"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

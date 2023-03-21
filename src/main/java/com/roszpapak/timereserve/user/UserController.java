@@ -52,6 +52,7 @@ public class UserController {
         List<Reservation> reservations = reservationService.getByUserId(myProfile.getId());
         model.addAttribute("myProfile", myProfile);
         model.addAttribute("myReservations", reservations);
+        model.addAttribute("unreadMessages", messageService.getUnseenMessages(myProfile.getId()));
         return "myprofile";
     }
 

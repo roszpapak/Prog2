@@ -1,5 +1,6 @@
 package com.roszpapak.timereserve.business;
 
+import com.roszpapak.timereserve.DTO.BusinessDTO;
 import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
 import com.roszpapak.timereserve.holiday.Holiday;
 import com.roszpapak.timereserve.holiday.HolidayRepository;
@@ -10,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -37,13 +39,21 @@ public class BusinessService {
         businessRepository.save(user.getBusiness());
     }
 
-    public List<Business> listByName(String keyword) {
-        return (List<Business>) businessRepository.findByName(keyword);
+    public List<BusinessDTO> listByName(String keyword) {
+        List<BusinessDTO> ret = new ArrayList<>();
+        for (Long id : businessRepository.findByName(keyword)) {
+            Business business = businessRepository.findById(id).get();
+            ret.add(new BusinessDTO(business.getId(), business.getName(), business.getAddress(), business.getPNumber(), business.getTags()));
+        }
+        return ret;
     }
 
-    public List<Business> listAll() {
-
-        return (List<Business>) businessRepository.findAll();
+    public List<BusinessDTO> listAll() {
+        List<BusinessDTO> ret = new ArrayList<>();
+        for (Business business : businessRepository.findAll()) {
+            ret.add(new BusinessDTO(business.getId(), business.getName(), business.getAddress(), business.getPNumber(), business.getTags()));
+        }
+        return ret;
     }
 
     public Business listById(Long id) {

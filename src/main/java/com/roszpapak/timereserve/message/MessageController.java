@@ -30,4 +30,14 @@ public class MessageController {
     public List<Message> getMessages(@PathVariable Long from, @PathVariable Long to) {
         return messageService.getChatMessages(from, to);
     }
+
+    @GetMapping("/setMessageSeen/{id}")
+    public void setMessageSeen(@PathVariable Long id) {
+        messageService.setMessageSeen(id);
+    }
+
+    @GetMapping("/setMessagesSeen/{fromId}/{toId}")
+    public void setMessagesSeen(@PathVariable Long fromId, @PathVariable Long toId) {
+        messageService.setMessagesSeen(toId, fromId);
+    }
 }

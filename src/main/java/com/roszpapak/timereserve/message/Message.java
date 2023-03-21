@@ -20,4 +20,5 @@ public class Message {
     private Long toId;
     private String messageContent;
     private LocalDateTime receivedDate;
+    private Boolean seen = false;
 }
