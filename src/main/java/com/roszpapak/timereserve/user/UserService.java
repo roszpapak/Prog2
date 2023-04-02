@@ -1,6 +1,9 @@
 package com.roszpapak.timereserve.user;
 
+import com.roszpapak.timereserve.DTO.UserDTO;
 import com.roszpapak.timereserve.business.BusinessRepository;
+import com.roszpapak.timereserve.exception.EmailAlreadyTakenException;
+import com.roszpapak.timereserve.exception.NotFoundException;
 import com.roszpapak.timereserve.registration.token.ConfirmationToken;
 import com.roszpapak.timereserve.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +45,7 @@ public class UserService implements UserDetailsService {
 
     public String signUpUser(User user) {
         boolean userExists = userRepository.findByEmail(user.getEmail()).isPresent();
-        if (userExists) throw new IllegalStateException("email already taken");
+        if (userExists) throw new EmailAlreadyTakenException("Email already taken");
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 
@@ -74,8 +78,12 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public List<User> listAll() {
-        return (List<User>) userRepository.findAll();
+    public List<UserDTO> listAll() {
+        List<UserDTO> ret = new ArrayList<>();
+        for (var user : userRepository.findAll()) {
+            ret.add(new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail()));
+        }
+        return ret;
     }
 
     //Get Users by keyword
@@ -84,9 +92,8 @@ public class UserService implements UserDetailsService {
     }
 
     //Get User by ID
-    public User get(Long id) {
-        Optional<User> result = userRepository.findById(id);
-        return result.get();
+    public User get(Long id) throws NotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class));
     }
 
     public void updateUser(UserEditRequest userEditRequest, User myProfile) {

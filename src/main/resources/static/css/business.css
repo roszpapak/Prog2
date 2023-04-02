@@ -80,3 +80,63 @@
 .ratingText{
     height: 75%;
 }
+
+.reservationSelect{
+    display:none;
+    margin: 2% 0%;
+    padding: 0.5rem 0.5rem 0.5rem 0rem;
+}
+
+#reservationSaveButton{
+    width: 8rem;
+    height: 2.5rem;
+    background-color: #598392;
+    border-radius: 5px;
+    border: 1px solid;
+    color: white;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.submitDate{
+    width: 8rem;
+    height: 2.5rem;
+    background-color: #598392;
+    border-radius: 5px;
+    border: 1px solid;
+    color: white;
+}
+
+#saveDateBox{
+    margin-top: 5%;
+}
+
+
+#sendFeedbacksBox{
+    width: fit-content;
+}
+
+.sendFeedBackButton{
+    width: 100%;
+    height: 2.5rem;
+    background-color: #598392;
+    border-radius: 5px;
+    border: 1px solid;
+    color: white;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#send{
+    width: 25%;
+    height: 2.5rem;
+    background-color: #598392;
+    border-radius: 5px;
+    border: 1px solid;
+    color: white;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

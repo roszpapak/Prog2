@@ -1,7 +1,8 @@
 package com.roszpapak.timereserve.business;
 
 import com.roszpapak.timereserve.DTO.BusinessDTO;
-import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
+import com.roszpapak.timereserve.exception.FilePathNotValidException;
+import com.roszpapak.timereserve.holiday.HolidayService;
 import com.roszpapak.timereserve.message.MessageService;
 import com.roszpapak.timereserve.rating.RatingService;
 import com.roszpapak.timereserve.reservation.ReservationService;
@@ -25,6 +26,9 @@ public class BusinessController {
     private ReservationService reservationService;
     @Autowired
     private RatingService ratingService;
+    @Autowired
+    private HolidayService holidayService;
+
     @Autowired
     private MessageService messageService;
 
@@ -59,7 +63,7 @@ public class BusinessController {
         Business business = businessService.getByUserId(user.getId());
         model.addAttribute("myBusiness", business);
         model.addAttribute("myBusinessReservations", reservationService.getByBusinessId(business.getId()));
-        model.addAttribute("holidays", businessService.listHolidays(user.getBusiness().getId()));
+        model.addAttribute("holidays", holidayService.listHolidays(user.getBusiness().getId()));
         model.addAttribute("unreadMessages", messageService.getUnseenMessages(user.getId()));
 
         return "mybusiness";
@@ -73,15 +77,8 @@ public class BusinessController {
 
     @PostMapping("/changePicture")
     @ResponseBody
-    public void changeProfilePicture(@RequestBody MultipartFile file, @AuthenticationPrincipal User user) {
-        businessService.changeProfilePicutre(file, user);
-    }
-
-    @PostMapping("/takeHoliday")
-    @ResponseBody
-    public void takeHoliday(@RequestBody HolidayRequestDTO holidayRequestDTO,
-                            @AuthenticationPrincipal User user) {
-        businessService.takeHoliday(holidayRequestDTO, user);
+    public void changeProfilePicture(@RequestBody MultipartFile file, @AuthenticationPrincipal User user) throws FilePathNotValidException {
+        businessService.changeProfilePicture(file, user);
     }
 
 

@@ -1,4 +1,4 @@
-package com.roszpapak.timereserve.reservation;
+package com.roszpapak.timereserve.DTO;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class ReservationRequest {
+public class ReservationRequestDTO {
 
     private Date date;
     @NotNull

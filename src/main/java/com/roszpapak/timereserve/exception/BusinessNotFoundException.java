@@ -1,4 +1,4 @@
-package com.roszpapak.timereserve.business;
+package com.roszpapak.timereserve.exception;
 
 public class BusinessNotFoundException extends Exception {
 

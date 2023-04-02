@@ -1,8 +1,9 @@
 package com.roszpapak.timereserve.reservation;
 
+import com.roszpapak.timereserve.DTO.ReservationRequestDTO;
 import com.roszpapak.timereserve.business.Business;
-import com.roszpapak.timereserve.business.BusinessNotFoundException;
 import com.roszpapak.timereserve.business.BusinessRepository;
+import com.roszpapak.timereserve.exception.BusinessNotFoundException;
 import com.roszpapak.timereserve.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,13 +42,13 @@ public class ReservationController {
 
     @PostMapping("/reservationsave")
     @ResponseBody
-    private String reservationSave(@RequestBody ReservationRequest reservationRequest, @AuthenticationPrincipal User user) {
-        Optional<Business> businessOptional = businessRepository.findById(reservationRequest.getBusinessId());
+    private String reservationSave(@RequestBody ReservationRequestDTO reservationRequestDTO, @AuthenticationPrincipal User user) {
+        Optional<Business> businessOptional = businessRepository.findById(reservationRequestDTO.getBusinessId());
         if (businessOptional.isPresent()) {
-            Business business = businessRepository.findById(reservationRequest.getBusinessId()).get();
-            LocalTime endTime = reservationRequest.getStartTime().plusMinutes(business.getTimeInterval());
-            Date date = reservationRequest.getDate();
-            Reservation reservation = new Reservation(LocalDate.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault()), reservationRequest.getStartTime(), endTime, business, user);
+            Business business = businessRepository.findById(reservationRequestDTO.getBusinessId()).get();
+            LocalTime endTime = reservationRequestDTO.getStartTime().plusMinutes(business.getTimeInterval());
+            Date date = reservationRequestDTO.getDate();
+            Reservation reservation = new Reservation(LocalDate.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault()), reservationRequestDTO.getStartTime(), endTime, business, user);
             reservationRepository.save(reservation);
         }
 

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HolidayRequestDTO {
+public class HolidayDTO {
     private LocalDate start;
     private LocalDate end;
 }

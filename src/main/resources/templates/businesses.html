@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html ! xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -33,10 +33,10 @@
         <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
 
         <div class="content">
-            <a th:href="@{/login}">
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/login}">
                 <button class="button">Log In</button>
             </a>
-            <a th:href="@{/registration}">
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
         </div>
@@ -47,9 +47,9 @@
 
 <section id="businesses">
     <div>
-        <form id="businessSearch" method="GET" th:action="@{/businesses}">
-            <input class="searchbutton" id="businessSearchInput" name="keyword" placeholder="Keresés.." type="text">
-            <button type="submit">GO</button>
+        <form class="searchForm" id="businessSearch" method="GET" th:action="@{/businesses}">
+            <input class="searchbutton" id="businessSearchInput" name="keyword" placeholder="Search.." type="text">
+            <button id="searchButton" type="submit">Search</button>
         </form>
         <table class="table table-bordered" id="businessTable">
             <thead>

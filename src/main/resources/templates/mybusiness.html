@@ -47,7 +47,7 @@
         <tr>
             <th>Logo</th>
             <th>NAME</th>
-            <th>PNUMBER</th>
+            <th>PHONE</th>
             <th>ADDRESS</th>
             <th>TAGS</th>
             <th>StartTime</th>
@@ -78,6 +78,7 @@
 </section>
 
 <section>
+    <p>Take a holiday:</p>
     <input name="daterange" type="text"/>
     <section id="myHolidays">
         <table class="table table-bordered">
@@ -137,35 +138,39 @@
     </table>
 </section>
 
-<section id="edit">
+<section class="editSection" id="edit">
+    <div class="greyBox"></div>
     <div class="editcontainer" id="editbox">
         <div class="modal-content-reg">
+            <p class="exitX" onclick="exitEdit()">x</p>
             <img alt="" src="/img/WR-icon.png">
-            <form id="businessEditForm" method="POST"
-                  th:object="${myBusiness}">
-                <span>Name</span>
-                <input id="name" name="name" th:field="*{name}" type="text">
-                <span>Phone Number</span>
-                <input id="pNumber" name="pNumber" th:field="*{pNumber}" type="text">
-                <span>Address</span>
-                <input id="address" name="address" th:field="*{address}" type="text">
-                <span>Tags</span>
-                <input id="tags" name="tags" type="text">
-                <span>Start Time</span>
-                <input id="startTime" name="starTime" th:value="*{startTime}" type="time">
-                <span>End Time</span>
-                <input id="endTime" name="endTime" th:value="*{endTime}" type="time">
+            <div class="editContent">
+                <form id="businessEditForm" method="POST"
+                      th:object="${myBusiness}">
+                    <span>Name</span>
+                    <input id="name" name="name" th:field="*{name}" type="text">
+                    <span>Phone Number</span>
+                    <input id="pNumber" name="pNumber" th:field="*{pNumber}" type="text">
+                    <span>Address</span>
+                    <input id="address" name="address" th:field="*{address}" type="text">
+                    <span>Tags</span>
+                    <input id="tags" name="tags" type="text">
+                    <span>Start Time</span>
+                    <input id="startTime" name="starTime" th:value="*{startTime}" type="time">
+                    <span>End Time</span>
+                    <input id="endTime" name="endTime" th:value="*{endTime}" type="time">
 
-                <button class="btn" id="btnSubmit" type="submit">SAVE</button>
-            </form>
-            <form id="changePictureForm">
-                <span>Change Profile Picture</span>
-                <input id="file" name="file" type="file">
-                <button class="btn" id="changePictureFormSubmit" type="submit">
-                    Submit
-                </button>
+                    <button class="btn" id="btnSubmit" type="submit">SAVE</button>
+                </form>
+                <form id="changePictureForm">
+                    <span>Change Profile Picture</span>
+                    <input id="file" name="file" type="file">
+                    <button class="btn" id="changePictureFormSubmit" type="submit">
+                        Submit
+                    </button>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 

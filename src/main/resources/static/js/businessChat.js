@@ -70,8 +70,17 @@ function send() {
     endpoint = urlFromId+"_"+urlToId;
     let url = '/app/sendMessage/' + endpoint;
     data.message = $("#chatMessage").val();
-    stompClient.send(url, {},JSON.stringify(data));
-    $("#chatMessage").val('');
+    if(isWhiteSpace(data.message)){
+        alert("Please write a message first!")
+    }else{
+        stompClient.send(url, {},JSON.stringify(data));
+        $("#chatMessage").val('');
+    }
+
+}
+
+function isWhiteSpace(str) {
+  return /^\s*$/.test(str);
 }
 
 function addStyleToMessages(){

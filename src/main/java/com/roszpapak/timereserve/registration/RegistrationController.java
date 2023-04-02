@@ -1,5 +1,6 @@
 package com.roszpapak.timereserve.registration;
 
+import com.roszpapak.timereserve.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class RegistrationController {
     }
 
     @GetMapping(path = "confirm")
-    public String confirm(@RequestParam("token") String token) {
+    public String confirm(@RequestParam("token") String token) throws NotFoundException {
         return registrationService.confirmToken(token);
     }
 }

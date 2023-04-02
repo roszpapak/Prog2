@@ -2,8 +2,8 @@ package com.roszpapak.timereserve.reservation;
 
 
 import com.roszpapak.timereserve.business.Business;
-import com.roszpapak.timereserve.business.BusinessNotFoundException;
 import com.roszpapak.timereserve.business.BusinessRepository;
+import com.roszpapak.timereserve.exception.BusinessNotFoundException;
 import com.roszpapak.timereserve.holiday.HolidayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -36,7 +36,7 @@ public class ReservationService {
     }
 
     //Calculating Reservations
-    private Set<Pair<LocalTime, LocalTime>> initializeReservations(long minute, LocalTime businessStartTime, LocalTime businessEndTime) {
+    private Set<Pair<LocalTime, LocalTime>> initializeReservations(long interval, LocalTime businessStartTime, LocalTime businessEndTime) {
 
         Set<Pair<LocalTime, LocalTime>> timeReservations = new LinkedHashSet<>();
 
@@ -45,8 +45,8 @@ public class ReservationService {
 
         while (!businessEndTime.equals(endTime)) {
 
-            if (startTime.until(businessEndTime, ChronoUnit.MINUTES) >= minute) {
-                endTime = startTime.plusMinutes(minute);
+            if (startTime.until(businessEndTime, ChronoUnit.MINUTES) >= interval) {
+                endTime = startTime.plusMinutes(interval);
             } else {
                 break;
             }
@@ -64,14 +64,15 @@ public class ReservationService {
 
     public Set<Pair<LocalTime, LocalTime>> getFreeReservationsForDay(Long businessId, LocalDate date) throws BusinessNotFoundException {
 
+        Optional<Business> optionalBusiness = businessRepository.findById(businessId);
+        Business business = optionalBusiness.orElseThrow(() -> new BusinessNotFoundException(String.format("Business with Id : %s not found", businessId)));
+
         Set<Pair<LocalTime, LocalTime>> possibleReservations = new LinkedHashSet<>();
 
         if (!holidayRepository.findByBusinessIdAndDate(businessId, date).isEmpty()) {
             return possibleReservations;
         }
 
-        Optional<Business> optionalBusiness = businessRepository.findById(businessId);
-        Business business = optionalBusiness.orElseThrow(() -> new BusinessNotFoundException(String.format("Business with Id : %s not found", businessId)));
 
         int interval = business.getTimeInterval();
         LocalTime startTime = business.getStartTime();

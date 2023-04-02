@@ -1,5 +1,6 @@
 package com.roszpapak.timereserve.user;
 
+import com.roszpapak.timereserve.DTO.UserDTO;
 import com.roszpapak.timereserve.message.MessageService;
 import com.roszpapak.timereserve.reservation.Reservation;
 import com.roszpapak.timereserve.reservation.ReservationService;
@@ -28,7 +29,7 @@ public class UserController {
     @GetMapping("/users")
     public String getUsers(Model model, String keyword) {
 
-        List<User> listUsers = userService.listAll();
+        List<UserDTO> listUsers = userService.listAll();
 
         if (keyword != null) {
             model.addAttribute("listUsers", userService.findByKeyWord(keyword));

@@ -1,10 +1,9 @@
 package com.roszpapak.timereserve.business;
 
 import com.roszpapak.timereserve.DTO.BusinessDTO;
-import com.roszpapak.timereserve.DTO.HolidayRequestDTO;
-import com.roszpapak.timereserve.holiday.Holiday;
-import com.roszpapak.timereserve.holiday.HolidayRepository;
+import com.roszpapak.timereserve.exception.FilePathNotValidException;
 import com.roszpapak.timereserve.user.User;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,21 +13,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @Service
+@AllArgsConstructor
 public class BusinessService {
 
     @Autowired
     private BusinessRepository businessRepository;
 
-    @Autowired
-    private HolidayRepository holidayRepository;
-
     public void editBusiness(BusinessEditRequest businessEditRequest, User user) {
-
-
-        System.out.println("Business request:" + businessEditRequest.toString());
-
         user.getBusiness().setName(businessEditRequest.getName());
         user.getBusiness().setPNumber(businessEditRequest.getPhone());
         user.getBusiness().setAddress(businessEditRequest.getAddress());
@@ -41,7 +35,7 @@ public class BusinessService {
 
     public List<BusinessDTO> listByName(String keyword) {
         List<BusinessDTO> ret = new ArrayList<>();
-        for (Long id : businessRepository.findByName(keyword)) {
+        for (Long id : businessRepository.findIdByName(keyword)) {
             Business business = businessRepository.findById(id).get();
             ret.add(new BusinessDTO(business.getId(), business.getName(), business.getAddress(), business.getPNumber(), business.getTags()));
         }
@@ -61,14 +55,14 @@ public class BusinessService {
     }
 
     public Business getByUserId(Long id) {
-        return businessRepository.findByUserId(id);
+        return businessRepository.findByUserId(id).orElse(null);
     }
 
-    public void changeProfilePicutre(MultipartFile file, User user) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public void changeProfilePicture(MultipartFile file, User user) throws FilePathNotValidException {
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
         if (fileName.contains("..")) {
-            System.out.println("Not a valid file");
+            throw new FilePathNotValidException("File path is not valid");
         }
 
         try {
@@ -78,15 +72,6 @@ public class BusinessService {
         }
 
         businessRepository.save(user.getBusiness());
-    }
-
-    public void takeHoliday(HolidayRequestDTO holidayRequestDTO, User user) {
-
-        holidayRepository.save(new Holiday(holidayRequestDTO.getStart(), holidayRequestDTO.getEnd(), user.getBusiness().getId()));
-    }
-
-    public List<Holiday> listHolidays(Long id) {
-        return holidayRepository.findByBusinessId(id);
     }
 
     public String getUserIdByBusiness(Long id) {

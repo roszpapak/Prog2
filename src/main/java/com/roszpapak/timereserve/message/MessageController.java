@@ -1,6 +1,7 @@
 package com.roszpapak.timereserve.message;
 
 import com.roszpapak.timereserve.DTO.MessageDTO;
+import com.roszpapak.timereserve.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -32,7 +33,7 @@ public class MessageController {
     }
 
     @GetMapping("/setMessageSeen/{id}")
-    public void setMessageSeen(@PathVariable Long id) {
+    public void setMessageSeen(@PathVariable Long id) throws NotFoundException {
         messageService.setMessageSeen(id);
     }
 

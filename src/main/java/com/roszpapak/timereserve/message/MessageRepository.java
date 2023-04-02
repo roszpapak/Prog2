@@ -18,5 +18,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Query(value = "SELECT from_id FROM Message where to_id = ?1 and seen = false group by from_id"
             , nativeQuery = true)
-    List<Long> findByToIdAndSeen(Long id);
+    List<Long> findByToIdAndNotSeen(Long id);
 }

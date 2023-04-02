@@ -31,7 +31,7 @@ public class RatingService {
 
     public String getAvgRatingById(Long businessId) {
         if (ratingRepository.getAvgRatingById(businessId).isEmpty()) {
-            return "1.0";
+            return "0.0";
         }
         return String.valueOf(ratingRepository.getAvgRatingById(businessId).get());
 

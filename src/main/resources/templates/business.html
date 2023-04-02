@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html ! xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -37,10 +37,10 @@
         <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
 
         <div class="content">
-            <a th:href="@{/login}">
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/login}">
                 <button class="button">Log In</button>
             </a>
-            <a th:href="@{/registration}">
+            <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
         </div>
@@ -91,8 +91,8 @@
                     <form id="reservationSearch">
                         <label>Reservation Date</label>
                         <input id="reservationDateInput" type="date">
-                        <input type="submit"><br>
-                        <select id="reservationSelect">
+                        <input class="submitDate" type="submit"><br>
+                        <select class="reservationSelect" id="reservationSelect">
                         </select>
                         <button id="reservationSaveButton" onclick="saveRegistration()" style="display:none">Save The
                             Date
@@ -110,7 +110,8 @@
                         </div>
                         <p>Enter your opinion about this service!</p>
                         <textarea class="rateMessage" cols="50" id="rateMessage" rows="4"></textarea><br>
-                        <button th:onclick="rateBusiness([[${businessById.id}]],[[${#authentication.principal.id}]])">
+                        <button class="sendFeedBackButton"
+                                th:onclick="rateBusiness([[${businessById.id}]],[[${#authentication.principal.id}]])">
                             Send rating
                         </button>
                     </div>

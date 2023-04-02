@@ -1,6 +1,9 @@
 package com.roszpapak.timereserve.registration;
 
 import com.roszpapak.timereserve.email.EmailSender;
+import com.roszpapak.timereserve.exception.EmailAlreadyConfirmedException;
+import com.roszpapak.timereserve.exception.NotFoundException;
+import com.roszpapak.timereserve.exception.TokenExpiredException;
 import com.roszpapak.timereserve.registration.token.ConfirmationToken;
 import com.roszpapak.timereserve.registration.token.ConfirmationTokenService;
 import com.roszpapak.timereserve.tag.Tag;
@@ -36,7 +39,7 @@ public class RegistrationService {
             throw new IllegalStateException("email not valid");
         }
         if (request.getBusiness() != null) {
-            List<Tag> correctTagList = getTagList(request.getBusiness().getTags());
+            List<Tag> correctTagList = getCorrectTagList(request.getBusiness().getTags());
             request.getBusiness().setTags(correctTagList);
         }
 
@@ -61,7 +64,7 @@ public class RegistrationService {
         return token;
     }
 
-    private List<Tag> getTagList(List<Tag> tags) {
+    private List<Tag> getCorrectTagList(List<Tag> tags) {
 
         List<Tag> correctTagsList = new ArrayList<>();
         for (Tag currentTag : tags) {
@@ -79,18 +82,18 @@ public class RegistrationService {
     }
 
     @Transactional
-    public String confirmToken(String token) {
+    public String confirmToken(String token) throws NotFoundException {
 
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
-                .orElseThrow(() -> new IllegalStateException("Token not found"));
+                .orElseThrow(() -> new NotFoundException("Token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            throw new EmailAlreadyConfirmedException("Email already confirmed");
         }
 
         if (LocalDateTime.now().isAfter(confirmationToken.getExpiredAt())) {
-            throw new IllegalStateException("Token expired");
+            throw new TokenExpiredException("Token expired");
         }
 
         confirmationTokenService.setConfirmedAt(token);

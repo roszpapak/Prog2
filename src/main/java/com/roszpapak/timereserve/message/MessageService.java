@@ -2,6 +2,7 @@ package com.roszpapak.timereserve.message;
 
 import com.roszpapak.timereserve.DTO.MessageDTO;
 import com.roszpapak.timereserve.DTO.UnreadMessageDTO;
+import com.roszpapak.timereserve.exception.NotFoundException;
 import com.roszpapak.timereserve.user.User;
 import com.roszpapak.timereserve.user.UserRepository;
 import lombok.AllArgsConstructor;
@@ -36,13 +37,10 @@ public class MessageService {
         return messageRepository.findAllChatMessages(from, to);
     }
 
-    public void setMessageSeen(Long id) {
-        if (messageRepository.findById(id).isPresent()) {
-            Message message = messageRepository.findById(id).get();
-            message.setSeen(true);
-            messageRepository.save(message);
-
-        }
+    public void setMessageSeen(Long id) throws NotFoundException {
+        Message message = messageRepository.findById(id).orElseThrow(() -> new NotFoundException("Message not found"));
+        message.setSeen(true);
+        messageRepository.save(message);
     }
 
     public void setMessagesSeen(Long fromId, Long toId) {
@@ -56,7 +54,7 @@ public class MessageService {
 
     public List<UnreadMessageDTO> getUnseenMessages(Long id) {
         List<UnreadMessageDTO> ret = new ArrayList<>();
-        List<Long> fromIdList = messageRepository.findByToIdAndSeen(id);
+        List<Long> fromIdList = messageRepository.findByToIdAndNotSeen(id);
         for (Long fromId : fromIdList) {
             User user = userRepository.findById(fromId).get();
             ret.add(new UnreadMessageDTO(user.getId(), user.getFirstName() + " " + user.getLastName()));
