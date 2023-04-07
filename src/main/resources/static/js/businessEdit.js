@@ -6,7 +6,7 @@ $(document).ready(function(){
             data.phone = $("#pNumber").val();
             data.name = $("#name").val();
             data.address = $("#address").val();
-            data.tags =[];
+            data.tags = $("#tags").val();;
 
 
             data.startTime = $("#startTime").val();
@@ -29,7 +29,7 @@ $(document).ready(function(){
     });
 
     $("#changePictureForm").submit(function (event){
-
+        event.preventDefault();
         let formData = new FormData();
 
         let file = $("#file")[0].files[0];
@@ -45,11 +45,15 @@ $(document).ready(function(){
              processData:false
          })
          .done(function(){
-               location.reload();
+            setTimeout(function() {
+                myReload();
+            }, 1000);
          });
     });
 
-
+function myReload() {
+    location.reload();
+}
 
     $(function() {
       $('input[name="daterange"]').daterangepicker({
@@ -75,6 +79,10 @@ $(document).ready(function(){
     });
 
 });
+function myReload() {
+    location.reload(); // Reload the page
+}
+
 
 function deleteHoliday(id) {
       $.ajax({
@@ -96,3 +104,27 @@ function deleteReservation(id) {
               location.reload();
            });
 }
+
+
+function getTags(){
+    $.ajax({
+        url: "http://localhost:8080/getTags",
+        type: "GET",
+        success: function(tags) {
+            const myString = tags.join(',');
+            const myInput = document.getElementById('tags');
+            myInput.value = myString;
+        }
+    });
+}
+
+function showHolidayPicker(){
+    var x = document.getElementById("datePicker");
+    if (x.style.display != "flex") {
+        x.style.display = "flex";
+    } else {
+      x.style.display = "none";
+    }
+}
+
+getTags();

@@ -82,7 +82,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public String confirmToken(String token) throws NotFoundException {
+    public String confirmToken(String token) throws NotFoundException, EmailAlreadyConfirmedException, TokenExpiredException {
 
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)

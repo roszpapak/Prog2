@@ -11,3 +11,27 @@
 .unreadContent p:hover {
     cursor: pointer;
 }
+
+.holidayPicker{
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+}
+
+.takeHoliday{
+    cursor: pointer;
+    background-color: #598392;
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.submitButton{
+    width: 13rem;
+    height: 2.5rem;
+    background-color: #598392;
+    border-radius: 5px;
+    border: 1px solid;
+    color: white;
+}

@@ -39,6 +39,9 @@
             <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+                <button class="button">LOG OUT</button>
+            </a>
         </div>
 
     </div>
@@ -67,7 +70,12 @@
                     <td>[[${business.name}]]</td>
                     <td>[[${business.address}]]</td>
                     <td>[[${business.pNumber}]]</td>
-                    <td><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></td>
+                    <td style="max-width: 400px;">
+                        <span th:each="tag, tagIndex : ${business.tags}">
+                        <span th:text="${tag.value}"></span>
+                        <span th:if="${tagIndex.count < business.tags.size()}">,</span>
+                        </span>
+                    </td>
                     <td><a th:href="@{'/businesses/' + ${business.id}}"><i
                             class="fas fa-share"></i></a>
                     </td>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -27,17 +27,17 @@
 
 </head>
 <body>
+<div class="unreadContent">
+    <p th:each="message : ${unreadMessages}" th:onclick="goToUser([[${message.id}]])">New message
+        from:[[${message.name}]]</p>
+</div>
 <section id="header">
     <div class="container">
 
         <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
-
-        <div class="content">
-            <div class="unreadContent">
-                <p th:each="message : ${unreadMessages}" th:onclick="goToUser([[${message.id}]])">New message
-                    from:[[${message.name}]]</p>
-            </div>
-        </div>
+        <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+            <button class="button">LOG OUT</button>
+        </a>
 
     </div>
 </section>
@@ -96,18 +96,26 @@
     </table>
 </section>
 
-<section id="edit">
+<section class="editSection" id="edit" style="display:none">
+    <div class="greyBox"></div>
     <div class="editcontainer" id="editbox">
         <div class="modal-content-reg">
+            <p class="exitX" onclick="exitEdit()">x</p>
             <img alt="" src="/img/WR-icon.png">
             <form id="userEditBox" method="POST" th:object="${myProfile}">
                 <span>FIRST NAME</span>
                 <input id="firstName" minlength="8" name="firstName" required th:field="*{firstName}" type="text">
                 <span>LAST NAME</span>
                 <input id="lastName" minlength="8" name="lastName" required th:field="*{lastName}" type="text">
-                <span>PASSWORD</span>
+                <span>NEW PASSWORD</span>
                 <input id="passwordInput" minlength="8" name="password" th:field="*{password}" type="password">
-                <button id="btnSubmit" type="submit">SAVE</button>
+                <div class="checkbox col" style="display: flex;justify-content: center;align-items: baseline;">
+                    <input class="checkboxcontent" id="show-passbox"
+                           style="margin: 0px;width: fit-content;margin-right: 10px;"
+                           type="checkbox">
+                    <p class="show-password">Show Password</p>
+                </div>
+                <button class="submitBtn" id="btnSubmit" type="submit">SAVE</button>
             </form>
         </div>
     </div>

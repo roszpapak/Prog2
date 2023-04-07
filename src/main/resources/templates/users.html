@@ -36,6 +36,9 @@
             <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+                <button class="button">LOG OUT</button>
+            </a>
         </div>
 
     </div>

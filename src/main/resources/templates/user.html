@@ -26,7 +26,7 @@
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
           integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/rating.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
 
 
 </head>
@@ -44,6 +44,9 @@
             <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+                <button class="button">LOG OUT</button>
+            </a>
         </div>
 
     </div>
@@ -58,7 +61,6 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -72,9 +74,10 @@
             </tbody>
         </table>
     </div>
-    <p>CHAT:</p>
-    <div id="chatBox" style="display: grid; width: 20rem;">
-        <p th:class="${message.fromId}" th:each="message : ${messages}">[[${message.messageContent}]]</p>
+    <p class="chatText">CHAT</p>
+    <div id="chatBox">
+        <p th:class="${message.fromId}" th:each="message : ${messages}">
+            [[${message.messageContent}]]</p>
     </div>
     <input id="chatMessage" size="40" type="text">
     <br/>

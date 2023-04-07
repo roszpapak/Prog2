@@ -39,7 +39,6 @@ function  connect() {
 }
 
 function appendToChat(message) {
-    console.log(message)
     const chatDiv = $("#chats");
     var object = JSON.parse(message);
     const para = document.createElement("p");
@@ -55,8 +54,6 @@ function appendToChat(message) {
           type: "GET"
         });
     }
-
-
 
     chatDiv.append(para);
     chatDiv.scrollTop(chatDiv.prop('scrollHeight'));

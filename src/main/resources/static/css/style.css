@@ -60,8 +60,7 @@
 
 #mainpage .maincontainer .content {
     display: flex;
-    align-content: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin: 0% 10%;
 }
 

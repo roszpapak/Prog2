@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -27,18 +27,17 @@
 
 </head>
 <body>
+<div class="unreadContent">
+    <p th:each="message : ${unreadMessages}" th:onclick="goToUser([[${message.id}]])">New message
+        from:[[${message.name}]]</p>
+</div>
 <section id="header">
     <div class="container">
 
         <a class="icon" th:href="@{/home}"><img alt="" src="/img/WR-icon.png"></a>
-
-        <div class="content">
-            <div class="unreadContent">
-                <p th:each="message : ${unreadMessages}" th:onclick="goToUser([[${message.id}]])">New message
-                    from:[[${message.name}]]</p>
-            </div>
-        </div>
-
+        <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+            <button class="button">LOG OUT</button>
+        </a>
     </div>
 </section>
 <section id="mytable">
@@ -59,12 +58,18 @@
         <tbody>
         <th:block th:each="business : ${myBusiness}">
             <tr>
-                <td><img alt="No Image" style="height:100px;" th:src="*{'data:image/jpeg;base64,'+ {business.image}}">
+                <td style="width: 200px;text-align: center;">
+                    <img alt="No Image" style="height:100px;" th:src="*{'data:image/jpeg;base64,'+ {business.image}}">
                 </td>
                 <td>[[${business.name}]]</td>
                 <td>[[${business.pNumber}]]</td>
                 <td>[[${business.address}]]</td>
-                <td><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></td>
+                <td style="max-width: 200px;">
+                    <span th:each="tag, tagIndex : ${business.tags}">
+                    <span th:text="${tag.value}"></span>
+                    <span th:if="${tagIndex.count < business.tags.size()}">,</span>
+                    </span>
+                </td>
                 <td>[[${business.startTime}]]</td>
                 <td>[[${business.endTime}]]</td>
                 <td>[[${business.timeInterval}]]</td>
@@ -78,11 +83,16 @@
 </section>
 
 <section>
-    <p>Take a holiday:</p>
-    <input name="daterange" type="text"/>
+    <div class="holidayPicker">
+        <h3 class="takeHoliday" onclick="showHolidayPicker()">Take a holiday</h3>
+        <input id="datePicker" name="daterange" style="display:none" type="text"/>
+    </div>
     <section id="myHolidays">
         <table class="table table-bordered">
             <thead>
+            <tr>
+                <h2 style="text-align: center;">Holiday</h2>
+            </tr>
             <tr>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -111,6 +121,9 @@
     <table class="table table-bordered">
         <thead>
         <tr>
+            <h2 style="text-align: center;">Reservations</h2>
+        </tr>
+        <tr>
             <th>DATE</th>
             <th>START</th>
             <th>END</th>
@@ -138,7 +151,7 @@
     </table>
 </section>
 
-<section class="editSection" id="edit">
+<section class="editSection" id="edit" style="display:none">
     <div class="greyBox"></div>
     <div class="editcontainer" id="editbox">
         <div class="modal-content-reg">
@@ -155,17 +168,25 @@
                     <input id="address" name="address" th:field="*{address}" type="text">
                     <span>Tags</span>
                     <input id="tags" name="tags" type="text">
+                    <span>Time Interval</span><br>
+                    <select class="regSelect" id="timeint" name="timeinterval" style="width: 100%;">
+                        <option value="15">15 MIN</option>
+                        <option value="30">30 MIN</option>
+                        <option value="60">60 MIN</option>
+                        <option value="120">120 MIN</option>
+                    </select><br>
+                    <!--                    todo: SET SELECT DEFAULT VALUE!!-->
                     <span>Start Time</span>
                     <input id="startTime" name="starTime" th:value="*{startTime}" type="time">
                     <span>End Time</span>
                     <input id="endTime" name="endTime" th:value="*{endTime}" type="time">
 
-                    <button class="btn" id="btnSubmit" type="submit">SAVE</button>
+                    <button class="submitButton" id="btnSubmit" type="submit">SAVE</button>
                 </form>
                 <form id="changePictureForm">
                     <span>Change Profile Picture</span>
                     <input id="file" name="file" type="file">
-                    <button class="btn" id="changePictureFormSubmit" type="submit">
+                    <button class="submitButton" id="changePictureFormSubmit" type="submit">
                         Submit
                     </button>
 

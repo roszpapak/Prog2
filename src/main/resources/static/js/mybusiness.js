@@ -13,4 +13,4 @@ $(function(){
 
     alert(maxDate);
     $('#txtDate').attr('min', maxDate);
-});
+})

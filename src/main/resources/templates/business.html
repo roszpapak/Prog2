@@ -43,6 +43,9 @@
             <a sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">
                 <button class="button">Sign In</button>
             </a>
+            <a sec:authorize="hasAuthority('BUSINESSOWNER') or hasAuthority('USER')" th:href="@{/logout}">
+                <button class="button">LOG OUT</button>
+            </a>
         </div>
 
     </div>
@@ -66,7 +69,10 @@
                 </div>
                 <div class="decorationLine"></div>
                 <h3>Services</h3>
-                <p><span th:each="tag :${business.tags}"> [[${tag.value}]]</span></p>
+                <p><span th:each="tag, tagIndex : ${business.tags}">
+                    <span th:text="${tag.value}"></span>
+                    <span th:if="${tagIndex.count < business.tags.size()}">,</span>
+                    </span></p>
             </div>
             <div class="col-9">
                 <h1>[[${business.name}]]</h1>
@@ -82,10 +88,10 @@
                 </div>
                 <div class="decorationLine"></div>
                 <div class="actionHolder">
-                    <p id="feedbacks" onclick="changeAction(this.id)">Feedbacks</p>
-                    <p id="saveDate" onclick="changeAction(this.id)">Save Date</p>
-                    <p id="sendFeedbacks" onclick="changeAction(this.id)">Send Feedbacks</p>
-                    <p id="chat" onclick="changeAction(this.id)">Chat</p>
+                    <p class="navButton" id="feedbacks" onclick="changeAction(this.id)">Feedbacks</p>
+                    <p class="navButton" id="saveDate" onclick="changeAction(this.id)">Save Date</p>
+                    <p class="navButton" id="sendFeedbacks" onclick="changeAction(this.id)">Send Feedback</p>
+                    <p class="navButton" id="chat" onclick="changeAction(this.id)">Chat</p>
                 </div>
                 <div class="noDisplay" id="saveDateBox">
                     <form id="reservationSearch">
@@ -123,11 +129,7 @@
                         <p>[[${rating.value}]]</p>
                     </div>
                     <div class="ratingBox" th:each="rating : ${ratings}">
-                        <p>[[${rating.message}]]</p>
-                        <p>[[${rating.value}]]</p>
-                    </div>
-                    <div class="ratingBox" th:each="rating : ${ratings}">
-                        <p>Nagyon Fain</p>
+                        <p class="ratingText">[[${rating.message}]]</p>
                         <p>[[${rating.value}]]</p>
                     </div>
                 </div>

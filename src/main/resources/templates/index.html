@@ -52,14 +52,14 @@
 
 <section id="mainpage">
     <div class="maincontainer">
-        <p class="maintext">KERESD MEG A NEKED <br> MEGFELELŐ SZOLGÁLTATÁST</p>
+        <p class="maintext">FIND THE BEST SERVICE <br> FOR YOU!</p>
         <div class="content">
             <div class="content-box" sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')">
                 <a class="regbutton" id="registrationButton"
-                   sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">REGISZTRACIO</a>
+                   sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')" th:href="@{/registration}">REGISTRATION</a>
                 <a class="regbutton" id="loginButton"
                    sec:authorize="!hasAuthority('BUSINESSOWNER') and !hasAuthority('USER')"
-                   th:href="@{/login}">BELEPES</a>
+                   th:href="@{/login}">LOG IN</a>
             </div>
             <div class="content-box">
                 <a class="regbutton" id="businessButton" th:href="@{/businesses}">BUSINESSES</a>

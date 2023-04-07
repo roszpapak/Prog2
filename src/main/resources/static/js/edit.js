@@ -11,7 +11,7 @@ function showEdit(e) {
 
 function exitEdit(){
     var x = document.getElementById("edit");
-      x.style.display = "none";
+     x.style.display = "none";
 }
 
 $("#editButton").click(showEdit);

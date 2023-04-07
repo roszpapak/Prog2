@@ -88,6 +88,12 @@ public class BusinessController {
         return businessService.getUserIdByBusiness(id);
     }
 
+    @GetMapping("/getTags")
+    @ResponseBody
+    public List<String> getTags(@AuthenticationPrincipal User user) {
+        return businessService.getTags(user.getBusiness().getId());
+    }
+
 }
 
 

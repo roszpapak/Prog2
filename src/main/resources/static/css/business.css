@@ -3,7 +3,7 @@
 }
 
 .profilePicture{
-    height: 15rem;
+    width: -webkit-fill-available;;
 }
 
 .decorationLine{
@@ -139,4 +139,17 @@
     text-align: center;
     align-items: center;
     justify-content: center;
+}
+
+.navButton{
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid;
+    border-color: transparent;
+}
+
+.navButton:hover{
+    border: 1px solid;
+    border-color: #598392;
+    border-radius: 10px;
 }

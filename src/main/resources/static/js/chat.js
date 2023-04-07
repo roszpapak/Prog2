@@ -35,6 +35,7 @@ function  connect() {
 }
 
 function appendToChat(message) {
+    const chatDiv = $("#chatBox");
     var object = JSON.parse(message);
     const para = document.createElement("p");
     const node = document.createTextNode(object.messageContent);
@@ -49,7 +50,9 @@ function appendToChat(message) {
         type: "GET"
         });
     }
-    $("#chatBox").append(para);
+
+    chatDiv.append(para);
+    chatDiv.scrollTop(chatDiv.prop('scrollHeight'));
 }
 
 function send() {
@@ -60,8 +63,12 @@ function send() {
     endpoint = urlFromId+"_"+urlToId;
     let url = '/app/sendMessage/' + endpoint;
     data.message = $("#chatMessage").val();
-    stompClient.send(url, {},JSON.stringify(data));
-    $("#chatMessage").val('');
+    if(isWhiteSpace(data.message)){
+        alert("Please write a message first!")
+    }else{
+        stompClient.send(url, {},JSON.stringify(data));
+        $("#chatMessage").val('');
+    }
 }
 
 function addStyleToMessages(){
@@ -79,6 +86,8 @@ function getUserId() {
             type: "GET",
             success: function(id) {
                 resolve(id);
+                const chatDiv = $("#chatBox");
+                chatDiv.scrollTop(chatDiv.prop('scrollHeight'));
             },
             error: function(error) {
                 reject(error);
@@ -92,6 +101,10 @@ function setMessageSeen(){
         url: "http://localhost:8080/setMessagesSeen/"+fromId+"/"+toId,
         type: "GET"
     });
+}
+
+function isWhiteSpace(str) {
+  return /^\s*$/.test(str);
 }
 
 connect();

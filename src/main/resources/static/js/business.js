@@ -19,7 +19,7 @@ function getAvgRating() {
 function setAvgStar(star){
     $("#avgRating").text(star);
 
-    for (let i = 1; i < parseInt(star, 10)+1; i++) {
+    for (let i = 1; i < parseInt(Math.round(star), 10)+1; i++) {
         const elem = document.getElementById("rateStar"+i);
         elem.classList.add("checked");
     }

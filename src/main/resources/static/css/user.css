@@ -1,0 +1,37 @@
+#chatBox{
+    width: 25%;
+    min-height: 200px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+#chatBox p{
+    margin: 1% 5%
+}
+
+#send{
+    width: 25%;
+    height: 2.5rem;
+    background-color: #598392;
+    border-radius: 5px;
+    border: 1px solid;
+    color: white;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#chatMessage{
+    width: 25%;
+}
+
+.chatText{
+width: 25%;
+    display: flex;
+    background-color: #598392;
+    color: white;
+    height: 2.5rem;
+    text-align: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
